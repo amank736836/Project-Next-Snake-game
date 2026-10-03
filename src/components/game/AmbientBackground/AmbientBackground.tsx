@@ -74,9 +74,29 @@ export default function AmbientBackground() {
       };
     };
 
+    // Pre-render the glow once per theme instead of building a gradient every frame
+    const makeSprite = (rgb: string, alpha: number) => {
+      const size = 64;
+      const spriteCanvas = document.createElement("canvas");
+      spriteCanvas.width = size;
+      spriteCanvas.height = size;
+      const sctx = spriteCanvas.getContext("2d");
+      if (!sctx) return spriteCanvas;
+      const half = size / 2;
+      const gradient = sctx.createRadialGradient(half, half, 0, half, half, half);
+      gradient.addColorStop(0, `rgba(${rgb}, ${alpha})`);
+      gradient.addColorStop(0.45, `rgba(${rgb}, ${alpha * 0.35})`);
+      gradient.addColorStop(1, `rgba(${rgb}, 0)`);
+      sctx.fillStyle = gradient;
+      sctx.fillRect(0, 0, size, size);
+      return spriteCanvas;
+    };
+
     let tint = readParticleColor();
+    let sprite = makeSprite(tint.rgb, tint.alpha);
     const themeObserver = new MutationObserver(() => {
       tint = readParticleColor();
+      sprite = makeSprite(tint.rgb, tint.alpha);
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,
@@ -91,6 +111,7 @@ export default function AmbientBackground() {
       pointer.y += (pointer.ty - pointer.y) * 0.06;
 
       const { rgb, alpha } = tint;
+      const coreColor = rgb;
 
       for (const p of particles) {
         // gentle drift
@@ -118,19 +139,17 @@ export default function AmbientBackground() {
         if (p.x > width + 12) p.x = -12;
 
         const flicker = 0.45 + Math.sin(p.twinkle) * 0.45;
-        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-        glow.addColorStop(0, `rgba(${rgb}, ${alpha * flicker})`);
-        glow.addColorStop(1, `rgba(${rgb}, 0)`);
+        const glowSize = p.r * 11;
 
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.globalAlpha = Math.min(flicker, 1);
+        ctx.drawImage(sprite, p.x - glowSize / 2, p.y - glowSize / 2, glowSize, glowSize);
 
-        ctx.fillStyle = `rgba(${rgb}, ${Math.min(alpha * flicker * 1.6, 0.95)})`;
+        ctx.globalAlpha = Math.min(alpha * flicker * 1.8, 0.95);
+        ctx.fillStyle = coreColor;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r * p.z, 0, Math.PI * 2);
         ctx.fill();
+        ctx.globalAlpha = 1;
       }
 
       raf = requestAnimationFrame(draw);
