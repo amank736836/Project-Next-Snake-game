@@ -1,20 +1,159 @@
+.wave {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--snake-glow), transparent 62%);
+    transform: scale(0);
+    animation: waveOut 0.95s var(--ease-out) forwards;
+    pointer-events: none;
+    z-index: 400;
+    mix-blend-mode: screen;
+}
+
+@keyframes waveOut {
+    0% {
+        transform: scale(0);
+        opacity: 0.95;
+    }
+
+    100% {
+        transform: scale(80);
+        opacity: 0;
+    }
+}
+
 .toggle {
     position: fixed;
     top: 1rem;
     right: 1rem;
-    padding: 8px 16px;
-    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 14px 6px 7px;
+    border-radius: 999px;
     border: 3px solid var(--game-border);
-    background: var(--input-bg);
-    color: var(--input-text);
-    font-weight: 800;
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    color: var(--foreground);
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
     cursor: pointer;
     z-index: 1000;
-    transition: all 0.2s;
-    font-size: 0.9rem;
+    box-shadow: 0 5px 0 var(--game-border), 0 14px 26px rgba(0, 0, 0, 0.22);
+    transition: transform 0.16s var(--ease-out), box-shadow 0.16s ease, filter 0.25s ease;
+}
+
+.toggle:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0 var(--game-border), 0 18px 32px rgba(0, 0, 0, 0.28);
+    filter: brightness(1.06);
 }
 
 .toggle:active {
-    transform: translateY(4px);
-    box-shadow: none;
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--game-border);
+}
+
+/* mini sky inside the switch ---------------------------------------------- */
+.track {
+    position: relative;
+    width: 54px;
+    height: 26px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex: 0 0 auto;
+    background: linear-gradient(120deg, #101a3a, #05060f);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
+    transition: background 0.5s var(--ease-out);
+}
+
+.toggle[aria-checked='false'] .track {
+    background: linear-gradient(120deg, #7fd8ff, #ffe9a8);
+}
+
+.trackGlow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 78% 30%, rgba(255, 255, 255, 0.35), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out);
+}
+
+.toggle[aria-checked='false'] .trackGlow {
+    opacity: 1;
+}
+
+.crater {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    left: 9px;
+    top: 7px;
+    box-shadow: 5px 8px 0 -0.5px rgba(255, 255, 255, 0.35);
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+
+.toggle[aria-checked='false'] .crater {
+    opacity: 0;
+}
+
+.knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 35% 30%, #ffffff, #c9d4e6 70%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.5s var(--ease-spring), background 0.5s var(--ease-out);
+}
+
+.knob[data-dark='false'] {
+    transform: translateX(28px);
+    background: radial-gradient(circle at 35% 30%, #fffdf3, #ffce4a 72%);
+    box-shadow: 0 0 14px rgba(245, 179, 1, 0.75), inset 0 -2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.icon {
+    position: absolute;
+    font-size: 0.7rem;
+    line-height: 1;
+    transition: opacity 0.35s var(--ease-out), transform 0.5s var(--ease-spring);
+}
+
+.sun {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.3);
+}
+
+.moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+.toggle[aria-checked='false'] .sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+.toggle[aria-checked='false'] .moon {
+    opacity: 0;
+    transform: rotate(120deg) scale(0.3);
+}
+
+.label {
+    position: relative;
+    min-width: 3.1em;
+    text-align: left;
 }

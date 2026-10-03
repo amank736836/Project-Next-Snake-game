@@ -4,38 +4,73 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
+}
+
+/* Tab switcher with sliding pill (#12 microinteraction) -------------------- */
+.tabSwitcher {
+    position: relative;
+    display: flex;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 18px;
+    background: var(--glass-bg);
+    border: 3px solid var(--game-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 6px 0 var(--game-border);
+}
+
+.tabPill {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    width: calc(50% - 9px);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #43e07a, #1f9d55);
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+    transition: transform 0.42s var(--ease-spring), background 0.3s ease;
+}
+
+.tabPill[data-tab='recent'] {
+    transform: translateX(calc(100% + 6px));
+    background: linear-gradient(180deg, var(--accent-cyan), var(--mission-blue-dark));
+    box-shadow: 0 4px 12px rgba(18, 203, 196, 0.4);
+}
+
+.tabBtn {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    padding: 11px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: color 0.25s ease;
+}
+
+.tabBtn.active {
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 850px) {
     .tabSwitcher {
-        display: none !important;
+        display: none;
     }
-}
-
-.tabBtn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: none;
-    color: var(--input-text);
-    font-weight: 900;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-}
-
-.tabBtn.active {
-    background: var(--button-green);
-    color: white;
-    box-shadow: 0 4px 0 var(--game-border);
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
     width: 100%;
 }
 
@@ -45,138 +80,424 @@
     }
 }
 
+/* Section card ------------------------------------------------------------- */
 .section {
-    background: var(--input-bg);
-    backdrop-filter: blur(12px);
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
     border: 4px solid var(--game-border);
-    border-radius: 24px;
-    padding: 1.5rem;
-    box-shadow: 10px 10px 0 var(--game-border), 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 1.35rem;
+    box-shadow:
+        10px 10px 0 var(--hard-shadow),
+        0 24px 50px var(--panel-shadow),
+        inset 0 1px 0 var(--glass-sheen);
     width: 100%;
-    min-width: 320px;
+    min-width: 0;
     min-height: 520px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: all 0.3s ease;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    transition: box-shadow 0.35s var(--ease-out), transform 0.35s var(--ease-out);
 }
 
-@media (max-height: 750px) {
-    .section {
-        max-width: 380px;
-        min-height: 440px;
-        padding: 1rem;
-    }
+.section.inView {
+    animation: staggerUp 0.75s var(--ease-out) both;
+    opacity: 1;
+    transform: none;
 }
 
 .section:hover {
     transform: translateY(-8px);
-    box-shadow: 10px 18px 0 var(--game-border), 0 30px 60px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        10px 18px 0 var(--hard-shadow),
+        0 36px 70px var(--panel-shadow),
+        inset 0 1px 0 var(--glass-sheen);
+}
+
+.cardGlow {
+    position: absolute;
+    inset: -30% -10% auto -10%;
+    height: 60%;
+    background: radial-gradient(60% 100% at 50% 0%, var(--snake-glow), transparent 70%);
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+@media (max-height: 800px) {
+    .section {
+        max-width: 380px;
+        min-height: min(440px, 68vh);
+        padding: 1rem;
+    }
 }
 
 .section h3 {
-    margin: 0 0 1rem 0;
+    position: relative;
+    margin: 0 0 1rem;
     font-size: 1.2rem;
     color: var(--button-green);
     text-align: center;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
+.demoChip {
+    font-style: normal;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1.5px dashed currentColor;
+    opacity: 0.7;
+    color: var(--accent-gold);
+}
+
+/* Rows -------------------------------------------------------------------- */
 .list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .item {
+    position: relative;
     display: flex;
     align-items: center;
+    gap: 12px;
     padding: 10px 14px;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 12px;
+    background: color-mix(in srgb, var(--foreground) 4%, transparent);
+    border: 2px solid transparent;
+    border-radius: 14px;
     font-weight: 800;
     font-size: 0.95rem;
-    transition: background 0.2s;
+    overflow: hidden;
+    animation: staggerUp 0.55s var(--ease-out) both;
+    transition: transform 0.28s var(--ease-spring), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item::after {
+    /* hover highlight sweep (#26 hover effects) */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--accent-mint) 26%, transparent) 50%, transparent 80%);
+    transform: translateX(-110%);
+    transition: transform 0.6s var(--ease-out);
+    pointer-events: none;
 }
 
 .item:hover {
-    background: rgba(0, 0, 0, 0.08);
+    transform: translateX(6px);
+    background: color-mix(in srgb, var(--foreground) 8%, transparent);
+    border-color: color-mix(in srgb, var(--accent-mint) 45%, transparent);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.item:hover::after {
+    transform: translateX(110%);
+}
+
+.you {
+    border-color: color-mix(in srgb, var(--accent-cyan) 60%, transparent);
+    background: color-mix(in srgb, var(--accent-cyan) 12%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-cyan) 18%, transparent);
+}
+
+.youTag {
+    margin-left: 8px;
+    font-style: normal;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--accent-cyan);
+    color: #04262b;
+    font-weight: 950;
+    animation: popIn 0.5s var(--ease-spring) both;
 }
 
 .rank {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, #666, var(--game-border));
-    color: white;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, #6b6b8f, var(--game-border));
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    margin-right: 14px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 950;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    transition: transform 0.35s var(--ease-spring);
+    position: relative;
+    overflow: hidden;
+}
+
+.rank::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+    transform: translateX(-120%);
+}
+
+.item:hover .rank {
+    transform: scale(1.12) rotate(-6deg);
+}
+
+.item:nth-child(1) .rank::after {
+    animation: shineSweep 2.6s var(--ease-out) infinite;
 }
 
 .item:nth-child(1) .rank {
-    background: linear-gradient(135deg, #ffd700, #b8860b);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, #ffd93d, #b8860b);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.6);
 }
 
 .item:nth-child(2) .rank {
-    background: linear-gradient(135deg, #c0c0c0, #708090);
-    box-shadow: 0 0 12px rgba(192, 192, 192, 0.4);
+    background: linear-gradient(135deg, #d9e2ec, #708090);
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.45);
 }
 
 .item:nth-child(3) .rank {
-    background: linear-gradient(135deg, #cd7f32, #8b4513);
-    box-shadow: 0 0 10px rgba(205, 127, 50, 0.3);
+    background: linear-gradient(135deg, #e2954a, #8b4513);
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.4);
+}
+
+.rowMain {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .name {
-    flex: 1;
-    margin-right: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+.track {
+    display: block;
+    height: 5px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--foreground) 10%, transparent);
+    overflow: hidden;
+}
+
+.trackFill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-mint), var(--accent-cyan));
+    transform-origin: left center;
+    animation: growBar 0.95s var(--ease-out) both;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent-cyan) 55%, transparent);
+}
+
+@keyframes growBar {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
 }
 
 .val {
+    font-weight: 950;
+    font-size: 1.05rem;
     color: var(--button-green);
-    font-weight: 900;
-    padding-left: 10px;
-    border-left: 2px solid rgba(0, 0, 0, 0.05);
+    padding-left: 12px;
+    border-left: 2px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+    font-variant-numeric: tabular-nums;
+    animation: popIn 0.5s var(--ease-spring) both;
 }
 
+/* Skeleton loading (#24) -------------------------------------------------- */
+.skeletonRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--foreground) 4%, transparent);
+    animation: skeletonPulse 1.4s var(--ease-in-out) infinite;
+}
+
+.skeletonBadge {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--foreground) 12%, transparent);
+    flex: 0 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.skeletonBar {
+    height: 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--foreground) 12%, transparent);
+    position: relative;
+    overflow: hidden;
+}
+
+.skeletonBadge::after,
+.skeletonBar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--glass-sheen) 70%, transparent), transparent);
+    animation: shimmerSweep 1.5s var(--ease-in-out) infinite;
+}
+
+/* Empty state ------------------------------------------------------------- */
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 2.6rem;
+    animation: floatY 3.4s var(--ease-in-out) infinite;
+    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+}
+
+.emptyTitle {
+    margin: 0;
+    font-weight: 900;
+    font-size: 1rem;
+}
+
+.emptyHint {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 600;
+    max-width: 24ch;
+}
+
+/* Pagination -------------------------------------------------------------- */
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
+    gap: 1.25rem;
+    margin-top: 1.1rem;
     font-weight: 900;
+}
+
+.pageInfo {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+}
+
+.pageInfo em {
+    font-style: normal;
+    opacity: 0.45;
+    margin: 0 3px;
 }
 
 .pagination button {
     background: var(--game-border);
-    color: white;
+    color: #fff;
     border: none;
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+    font-size: 0.9rem;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--game-border) 55%, #000);
+    transition: transform 0.15s var(--ease-spring), box-shadow 0.15s ease, opacity 0.2s ease;
 }
 
+.pagination button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 0 color-mix(in srgb, var(--game-border) 55%, #000);
+}
+
+.pagination button:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--game-border) 55%, #000);
+}
+
+.pagination button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Back button ------------------------------------------------------------- */
 .backBtn {
+    position: relative;
+    overflow: hidden;
     margin-top: 1rem;
     padding: 16px;
-    border-radius: 12px;
-    border: 4px solid var(--game-border);
+    border-radius: 14px;
+    border: 3px solid var(--game-border);
+    font-family: inherit;
     font-weight: 900;
-    background: var(--game-border);
-    color: white;
+    letter-spacing: 0.08em;
+    background: var(--glass-bg-strong);
+    color: var(--foreground);
     cursor: pointer;
+    box-shadow: 0 8px 0 var(--game-border);
+    transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease;
+}
+
+.backBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 11px 0 var(--game-border);
+}
+
+.backBtn:active {
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 var(--game-border);
+}
+
+.backBtnWide {
+    max-width: 320px;
+    align-self: center;
+    width: 100%;
+}
+
+.backLabel {
+    position: relative;
+    z-index: 4;
+}
+
+.btnShine {
+    position: absolute;
+    top: -50%;
+    bottom: -50%;
+    width: 42%;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent-mint) 55%, transparent), transparent);
+    transform: translateX(-160%) skewX(-18deg);
+}
+
+.backBtn:hover .btnShine {
+    animation: shineSweep 0.9s var(--ease-out);
 }
 
 @media (max-width: 849px) {

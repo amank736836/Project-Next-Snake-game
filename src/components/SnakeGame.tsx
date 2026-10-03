@@ -1,19 +1,21 @@
 "use client";
 
 import { useSnakeGame } from "./game/hooks/useSnakeGame";
-import { getSnakePartRotation } from "./game/utils";
 import ThemeToggle from "./game/ThemeToggle/ThemeToggle";
 import MissionHub from "./game/MissionHub/MissionHub";
 import Leaderboard from "./game/Leaderboard/Leaderboard";
 import GameHeader from "./game/GameHeader/GameHeader";
 import SnakeBoard from "./game/SnakeBoard/SnakeBoard";
 import Controls from "./game/Controls/Controls";
+import GameOver from "./game/GameOver/GameOver";
+import SnakeLoader from "./game/SnakeLoader/SnakeLoader";
 
 export default function SnakeGame() {
     const game = useSnakeGame();
 
-    if (!game.mounted) return null;
+    if (!game.mounted) return <SnakeLoader />;
 
+    const leader = game.AllScores[0];
 
     return (
         <div className="container">
@@ -32,6 +34,9 @@ export default function SnakeGame() {
                                 totalPages={game.totalPages}
                                 onPageChange={game.handlePageChange}
                                 onBack={() => game.setMenuView("main")}
+                                isLoading={game.isLoadingScores}
+                                playerName={game.playerName}
+                                isDemo={game.isDemo}
                             />
                         ) : (
                             <>
@@ -46,6 +51,9 @@ export default function SnakeGame() {
                                         onPageChange={game.handlePageChange}
                                         onBack={() => { }}
                                         isDashboard
+                                        isLoading={game.isLoadingScores}
+                                        playerName={game.playerName}
+                                        isDemo={game.isDemo}
                                     />
                                 </div>
 
@@ -60,6 +68,7 @@ export default function SnakeGame() {
                                     setControlType={game.setControlType}
                                     onViewLeaderboard={() => game.setMenuView("leaderboard")}
                                     inputRef={game.inputRef}
+                                    leader={leader}
                                 />
 
                                 <div className="score-section recent-hunts-section desktop-only">
@@ -73,6 +82,8 @@ export default function SnakeGame() {
                                         onPageChange={() => { }}
                                         onBack={() => { }}
                                         isDashboard
+                                        isLoading={game.isLoadingScores}
+                                        playerName={game.playerName}
                                     />
                                 </div>
                             </>
@@ -99,6 +110,7 @@ export default function SnakeGame() {
                             <GameHeader
                                 playerName={game.playerName}
                                 score={game.score}
+                                bestScore={game.sessionBest}
                                 onPause={game.handlePause}
                                 boardSizeVar="var(--board-size)"
                             />
@@ -138,6 +150,22 @@ export default function SnakeGame() {
                         layout="portrait"
                     />
                 </div>
+            )}
+
+            {game.gameState === "gameOver" && game.lastRun && (
+                <GameOver
+                    playerName={game.playerName}
+                    score={game.lastRun.score}
+                    bestScore={game.lastRun.bestScore}
+                    length={game.lastRun.length}
+                    isNewRecord={game.lastRun.isRecord}
+                    onPlayAgain={game.restartGame}
+                    onViewLeaderboard={() => {
+                        game.backToMenu();
+                        game.setMenuView("leaderboard");
+                    }}
+                    onMainMenu={game.backToMenu}
+                />
             )}
         </div>
     );

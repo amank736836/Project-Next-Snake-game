@@ -3,13 +3,13 @@ import { GameMissionData } from "./types";
 export const GRID_SIZE = 20;
 export const INITIAL_SNAKE_BODY: number[][] = [[5, 5]];
 
-export const obfuscate = (data: any) =>
+export const obfuscate = (data: GameMissionData) =>
     btoa(JSON.stringify(data).split('').map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ (i % 256))).join(''));
 
 export const deobfuscate = (str: string): GameMissionData | null => {
     try {
         return JSON.parse(atob(str).split('').map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ (i % 256))).join(''));
-    } catch (e) {
+    } catch {
         return null;
     }
 };

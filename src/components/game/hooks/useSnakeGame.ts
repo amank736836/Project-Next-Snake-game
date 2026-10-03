@@ -2,6 +2,25 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { ScoreEntry, GameState, ControlType, GameMissionData } from "../types";
 import { generateFood, obfuscate, deobfuscate, INITIAL_SNAKE_BODY, GRID_SIZE } from "../utils";
 
+export interface RunSummary {
+    score: number;
+    bestScore: number;
+    length: number;
+    isRecord: boolean;
+}
+
+type DirectionInput = string | { key?: string; preventDefault?: () => void };
+
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+
+const KEY_ALIASES: Record<string, string> = {
+    w: "ArrowUp", W: "ArrowUp", ArrowUp: "ArrowUp",
+    s: "ArrowDown", S: "ArrowDown", ArrowDown: "ArrowDown",
+    a: "ArrowLeft", A: "ArrowLeft", ArrowLeft: "ArrowLeft",
+    d: "ArrowRight", D: "ArrowRight", ArrowRight: "ArrowRight",
+    " ": "ArrowUp",
+};
+
 export const useSnakeGame = () => {
     const [snake, setSnake] = useState([...INITIAL_SNAKE_BODY]);
     const [playerName, setPlayerName] = useState("");
@@ -20,13 +39,21 @@ export const useSnakeGame = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [stickPosLeft, setStickPosLeft] = useState({ x: 0, y: 0 });
     const [stickPosRight, setStickPosRight] = useState({ x: 0, y: 0 });
+    const [isLoadingScores, setIsLoadingScores] = useState(true);
+    const [isDemo, setIsDemo] = useState(false);
+    const [sessionBest, setSessionBest] = useState(0);
+    const [lastRun, setLastRun] = useState<RunSummary | null>(null);
 
     const directionRef = useRef([1, 0]);
     const scoreRef = useRef(0);
+    const bestRef = useRef(0);
+    const snakeLengthRef = useRef(1);
     const foodRef = useRef<[number, number]>(generateFood(INITIAL_SNAKE_BODY));
     const inputRef = useRef<HTMLInputElement>(null);
     const joystickRefLeft = useRef<HTMLDivElement>(null);
     const joystickRefRight = useRef<HTMLDivElement>(null);
+
+    snakeLengthRef.current = snake.length;
 
     const highestScoreSend = async ({ name, score }: { name: string; score: number }) => {
         try {
@@ -53,7 +80,7 @@ export const useSnakeGame = () => {
             const newScores = prevScores.map((s) => {
                 if (s.name === name) {
                     found = true;
-                    return { ...s, latestScore: score };
+                    return { ...s, latestScore: score, score: Math.max(s.score, score) };
                 }
                 return s;
             });
@@ -65,14 +92,35 @@ export const useSnakeGame = () => {
     }, []);
 
     const handleGameOver = useCallback(() => {
-        highestScoreSend({ name: playerName, score: scoreRef.current });
-        updateLocalScores({ name: playerName, score: scoreRef.current });
+        const finalScore = scoreRef.current;
+        const isRecord = finalScore > bestRef.current;
+        const newBest = Math.max(bestRef.current, finalScore);
+
+        bestRef.current = newBest;
+        setSessionBest(newBest);
+        try {
+            localStorage.setItem("nagini_best", String(newBest));
+        } catch {
+            /* storage unavailable — session best only */
+        }
+
+        setLastRun({
+            score: finalScore,
+            bestScore: newBest,
+            length: snakeLengthRef.current,
+            isRecord: isRecord && finalScore > 0,
+        });
+
+        highestScoreSend({ name: playerName, score: finalScore });
+        updateLocalScores({ name: playerName, score: finalScore });
         scoreRef.current = 0;
         setScore(0);
         setGameState("gameOver");
         directionRef.current = [1, 0];
         setSnake([...INITIAL_SNAKE_BODY]);
-        localStorage.removeItem("snake_mission_save");
+        try {
+            localStorage.removeItem("snake_mission_save");
+        } catch { /* ignore */ }
         setHasSavedGame(false);
     }, [playerName, updateLocalScores]);
 
@@ -86,7 +134,9 @@ export const useSnakeGame = () => {
             playerName: playerName,
             direction: directionRef.current
         };
-        localStorage.setItem("snake_mission_save", obfuscate(missionData));
+        try {
+            localStorage.setItem("snake_mission_save", obfuscate(missionData));
+        } catch { /* ignore */ }
         setHasSavedGame(true);
     };
 
@@ -97,6 +147,7 @@ export const useSnakeGame = () => {
             if (data) {
                 setSnake(data.snake);
                 setScore(data.score);
+                scoreRef.current = data.score;
                 foodRef.current = data.food;
                 setPlayerName(data.playerName);
                 directionRef.current = data.direction;
@@ -121,15 +172,29 @@ export const useSnakeGame = () => {
         directionRef.current = [1, 0];
     }, [playerName]);
 
-    const handleDirection = useCallback((e: any) => {
-        const key = e.key || e;
+    /** Play again straight from the game-over screen, same hunter. */
+    const restartGame = useCallback(() => {
+        setMenuView("main");
+        startGame();
+    }, [startGame]);
+
+    /** Return to the mission hub from the game-over screen. */
+    const backToMenu = useCallback(() => {
+        setGameState("menu");
+        setMenuView("main");
+        setLastRun(null);
+    }, []);
+
+    const handleDirection = useCallback((input: DirectionInput) => {
+        const raw = typeof input === "string" ? input : input.key ?? "";
+        const key = KEY_ALIASES[raw] ?? raw;
         if ((document.activeElement as HTMLElement)?.tagName === "INPUT") return;
 
-        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key) && e.preventDefault) {
-            e.preventDefault();
+        if (ARROW_KEYS.includes(key) && typeof input !== "string" && input.preventDefault) {
+            input.preventDefault();
         }
 
-        if (gameState !== "playing" && playerName.trim() !== "" && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
+        if (gameState !== "playing" && playerName.trim() !== "" && ARROW_KEYS.includes(key)) {
             startGame();
         }
 
@@ -146,15 +211,20 @@ export const useSnakeGame = () => {
                 fetch(`/api/snakeGame/highestScore?page=${page}&limit=5`),
                 fetch("/api/snakeGame/latestScore")
             ]);
-            const hData = await hRes.json();
-            const lData = await lRes.json();
+            const hData = await hRes.json().catch(() => null);
+            const lData = await lRes.json().catch(() => null);
 
-            setAllScores(hData.scores);
-            setTotalPages(hData.pagination.totalPages);
-            setHighScorePage(hData.pagination.page);
-            setLatestScores(lData);
+            setAllScores(Array.isArray(hData?.scores) ? hData.scores : []);
+            setTotalPages(hData?.pagination?.totalPages ?? 1);
+            setHighScorePage(hData?.pagination?.page ?? page);
+            setIsDemo(Boolean(hData?.demo));
+            setLatestScores(Array.isArray(lData) ? lData : []);
         } catch (e) {
             console.error(e);
+            setAllScores([]);
+            setLatestScores([]);
+        } finally {
+            setIsLoadingScores(false);
         }
     }, []);
 
@@ -211,6 +281,12 @@ export const useSnakeGame = () => {
             document.documentElement.setAttribute("data-theme", "dark");
         }
 
+        const storedBest = Number(localStorage.getItem("nagini_best") || 0);
+        if (storedBest > 0) {
+            bestRef.current = storedBest;
+            setSessionBest(storedBest);
+        }
+
         const saved = localStorage.getItem("snake_mission_save");
         if (saved) setHasSavedGame(true);
 
@@ -234,7 +310,7 @@ export const useSnakeGame = () => {
         localStorage.setItem("theme", newTheme);
     };
 
-    const handleJoystickStart = (e: React.TouchEvent | React.MouseEvent) => { };
+    const handleJoystickStart = () => { };
 
     const handleJoystickMove = (e: React.TouchEvent | React.MouseEvent, side: "left" | "right") => {
         const ref = side === "left" ? joystickRefLeft : joystickRefRight;
@@ -275,7 +351,8 @@ export const useSnakeGame = () => {
         score, mounted, theme, controlType, setControlType, hasSavedGame, menuView, setMenuView,
         leaderboardTab, setLeaderboardTab, highScorePage, totalPages, stickPosLeft, stickPosRight,
         directionRef, foodRef, inputRef, joystickRefLeft, joystickRefRight,
-        handlePause, handleResume, startGame, handleDirection, handlePageChange, toggleTheme,
+        isLoadingScores, isDemo, sessionBest, lastRun,
+        handlePause, handleResume, startGame, restartGame, backToMenu, handleDirection, handlePageChange, toggleTheme,
         handleJoystickStart, handleJoystickMove, handleJoystickEnd
     };
 };
