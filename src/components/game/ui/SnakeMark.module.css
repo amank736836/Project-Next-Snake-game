@@ -1,8 +1,11 @@
 .mark {
   position: relative;
+  width: var(--mark-size, 132px);
+  height: var(--mark-size, 132px);
   display: grid;
   place-items: center;
   margin: 0 auto;
+  flex: 0 0 auto;
   animation: floatY 5.5s var(--ease-in-out) infinite;
 }
 

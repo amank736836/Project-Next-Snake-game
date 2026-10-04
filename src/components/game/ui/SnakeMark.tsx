@@ -8,7 +8,11 @@ import styles from "./SnakeMark.module.css";
  * idle breathing + tail sway (#13 character animation) and pupils that follow
  * the visitor's pointer (#12 microinteraction).
  */
-export default function SnakeMark({ size = 132 }: { size?: number }) {
+/**
+ * `size` is optional — when omitted the mark sizes itself from the
+ * `--mark-size` custom property, which lets parents scale it responsively.
+ */
+export default function SnakeMark({ size }: { size?: number }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [gaze, setGaze] = useState({ x: 0, y: 0 });
 
@@ -40,7 +44,10 @@ export default function SnakeMark({ size = 132 }: { size?: number }) {
   }, []);
 
   return (
-    <div className={styles.mark} style={{ width: size, height: size }}>
+    <div
+      className={styles.mark}
+      style={size ? ({ "--mark-size": `${size}px` } as React.CSSProperties) : undefined}
+    >
       <span className={styles.halo} aria-hidden="true" />
       <span className={styles.ring} aria-hidden="true" />
 

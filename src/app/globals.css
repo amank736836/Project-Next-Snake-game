@@ -298,11 +298,13 @@ body {
   position: relative;
   z-index: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  /* NOTE: vertical centering is done with `margin-block: auto` on the screens
+     below. `justify-content: center` would push overflow above the viewport
+     top, where it can never be scrolled to (cut-off hero on short screens). */
   min-height: 100vh;
-  padding: 1.5rem;
+  padding: 1.25rem;
   width: 100%;
 }
 
@@ -310,6 +312,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-block: auto;
   animation: screenPortalIn 0.6s var(--ease-out) both;
 }
 
@@ -340,27 +343,34 @@ body {
 
 @media (min-width: 850px) {
   .menu-content.main-view {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    /* proportional columns: the side boards can never be crushed by the hub */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: center;
     justify-content: center;
-    align-items: flex-end;
-    gap: clamp(0.4rem, 1.2vw, 1.25rem);
+    gap: clamp(0.5rem, 1.2vw, 1.25rem);
     width: 100%;
-    max-width: 1600px;
+    max-width: 1400px;
     padding: 0 0.5rem;
+  }
+
+  .menu-content.main-view>.score-section {
+    justify-self: center;
+    max-width: 400px;
+  }
+
+  .menu-content.main-view>.hub-section {
+    min-width: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
 @media (max-height: 780px) and (min-width: 850px) {
   .menu-content.main-view {
     gap: clamp(0.1rem, 0.5vw, 0.5rem);
-  }
-}
-
-/* keep the three-column desktop row breathable on smaller laptops */
-@media (min-width: 850px) and (max-width: 1180px) {
-  .menu-content.main-view>.score-section {
-    max-width: 300px;
   }
 }
 
@@ -396,6 +406,7 @@ body {
   align-items: center;
   width: 100%;
   padding: 1rem;
+  margin-block: auto;
   animation: screenPortalIn 0.55s var(--ease-out) both;
 }
 

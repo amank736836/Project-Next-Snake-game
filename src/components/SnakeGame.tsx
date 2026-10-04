@@ -57,19 +57,22 @@ export default function SnakeGame() {
                                     />
                                 </div>
 
-                                <MissionHub
-                                    playerName={game.playerName}
-                                    setPlayerName={game.setPlayerName}
-                                    alert={game.alert}
-                                    onStart={game.startGame}
-                                    onResume={game.handleResume}
-                                    hasSavedGame={game.hasSavedGame}
-                                    controlType={game.controlType}
-                                    setControlType={game.setControlType}
-                                    onViewLeaderboard={() => game.setMenuView("leaderboard")}
-                                    inputRef={game.inputRef}
-                                    leader={leader}
-                                />
+                                {/* wrapper gives the desktop grid an explicit sizing hook */}
+                                <div className="hub-section">
+                                    <MissionHub
+                                        playerName={game.playerName}
+                                        setPlayerName={game.setPlayerName}
+                                        alert={game.alert}
+                                        onStart={game.startGame}
+                                        onResume={game.handleResume}
+                                        hasSavedGame={game.hasSavedGame}
+                                        controlType={game.controlType}
+                                        setControlType={game.setControlType}
+                                        onViewLeaderboard={() => game.setMenuView("leaderboard")}
+                                        inputRef={game.inputRef}
+                                        leader={leader}
+                                    />
+                                </div>
 
                                 <div className="score-section recent-hunts-section desktop-only">
                                     <Leaderboard

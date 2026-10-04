@@ -77,7 +77,7 @@ export default function MissionHub({
     return (
         <div className={styles.centerColumn}>
             <div className={styles.title}>
-                <SnakeMark size={124} />
+                <SnakeMark />
 
                 <h1 className={styles.gameName} aria-label={TITLE}>
                     {letters.map((letter, i) => (
