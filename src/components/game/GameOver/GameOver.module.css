@@ -1,0 +1,460 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    animation: fadeIn 0.35s var(--ease-out) both;
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 6, 16, 0.62);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    animation: fadeIn 0.4s var(--ease-out) both;
+}
+
+[data-theme='light'] .backdrop {
+    background: rgba(232, 236, 248, 0.6);
+}
+
+/* panel -------------------------------------------------------------------- */
+.panel {
+    position: relative;
+    width: min(520px, 100%);
+    max-height: 92vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 4vh, 2.4rem);
+    border-radius: 30px;
+    border: 5px solid var(--game-border);
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    box-shadow:
+        14px 14px 0 var(--game-border),
+        0 40px 90px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 var(--glass-sheen);
+    animation: panelIn 0.6s var(--ease-spring) both;
+}
+
+.record {
+    border-color: var(--accent-gold);
+    box-shadow:
+        14px 14px 0 color-mix(in srgb, var(--accent-gold) 70%, #000),
+        0 0 60px rgba(251, 197, 49, 0.45),
+        0 40px 90px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes panelIn {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.86) rotate(-2deg);
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+
+.panelGlow {
+    position: absolute;
+    inset: -40% -20% auto -20%;
+    height: 70%;
+    background: radial-gradient(60% 100% at 50% 0%, var(--snake-glow), transparent 70%);
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.record .panelGlow {
+    background: radial-gradient(60% 100% at 50% 0%, rgba(251, 197, 49, 0.6), transparent 70%);
+}
+
+.cornerSparkle {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+    animation: sparkFloat 2.6s var(--ease-in-out) infinite;
+}
+
+.kicker {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    animation: fadeIn 0.5s 0.2s var(--ease-out) both;
+}
+
+.record .kicker {
+    color: var(--accent-gold);
+}
+
+/* glitchy expressive title (#4 typography) --------------------------------- */
+.title {
+    position: relative;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: clamp(2rem, 9vw, 3.1rem);
+    font-weight: 950;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: transparent;
+    background: linear-gradient(180deg, #fff, var(--accent-red) 65%, #8e0f22);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45));
+}
+
+.title::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    color: var(--accent-cyan);
+    -webkit-text-fill-color: currentColor;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    animation: glitchShift 2.8s steps(2, end) infinite;
+    pointer-events: none;
+}
+
+.letter {
+    display: inline-block;
+    animation: letterKick 0.75s var(--ease-spring) both;
+}
+
+@keyframes letterKick {
+    0% {
+        opacity: 0;
+        transform: translateY(-26px) rotate(-16deg) scale(0.5);
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0) scale(1);
+    }
+}
+
+/* fallen snake ------------------------------------------------------------- */
+.fallen {
+    width: min(280px, 78%);
+    overflow: visible;
+    animation: fadeIn 0.6s 0.35s var(--ease-out) both;
+}
+
+.fallenBody {
+    --dash: 320;
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+    animation: drawStroke 1.3s 0.35s var(--ease-out) forwards;
+    filter: drop-shadow(0 0 8px var(--snake-glow));
+    opacity: 0.85;
+}
+
+.fallenHead {
+    transform-origin: 188px 20px;
+    animation: headSag 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes headSag {
+
+    0%,
+    100% {
+        transform: rotate(-4deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(-9deg) translateY(2px);
+    }
+}
+
+.fallenTongue {
+    transform-origin: 186px 32px;
+    animation: tongueFlicker 0.22s infinite alternate;
+}
+
+@keyframes tongueFlicker {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* stats -------------------------------------------------------------------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    width: 100%;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.7rem 0.4rem;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border);
+    background: color-mix(in srgb, var(--foreground) 4%, transparent);
+    animation: staggerUp 0.6s var(--ease-out) both;
+}
+
+.stat:nth-child(1) {
+    animation-delay: 0.35s;
+}
+
+.stat:nth-child(2) {
+    animation-delay: 0.45s;
+}
+
+.stat:nth-child(3) {
+    animation-delay: 0.55s;
+}
+
+.statLabel {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 800;
+    text-align: center;
+}
+
+.statValue {
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-mint);
+    text-shadow: 0 0 18px color-mix(in srgb, var(--accent-mint) 40%, transparent);
+}
+
+.bestValue {
+    color: var(--accent-gold);
+    text-shadow: 0 0 18px rgba(251, 197, 49, 0.45);
+}
+
+.recordBadge {
+    margin: 0;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-weight: 950;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: #3a2a00;
+    background: linear-gradient(100deg, var(--accent-gold), #ffe680, var(--accent-gold));
+    background-size: 200% 100%;
+    animation: gradientPan 2.4s linear infinite, popIn 0.6s 0.5s var(--ease-spring) both;
+    box-shadow: 0 6px 18px rgba(251, 197, 49, 0.5);
+}
+
+/* actions ------------------------------------------------------------------ */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    margin-top: 0.35rem;
+}
+
+.playAgain,
+.secondary,
+.ghost {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 15px;
+    border-radius: 16px;
+    font-family: inherit;
+    font-weight: 950;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease, filter 0.2s ease;
+}
+
+.playAgain {
+    background: linear-gradient(180deg, #43e07a, #1f9d55);
+    color: #fff;
+    border: 4px solid var(--game-border);
+    box-shadow: 0 10px 0 var(--game-border), 0 18px 34px rgba(46, 204, 113, 0.32);
+    animation: breathe 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        box-shadow: 0 10px 0 var(--game-border), 0 18px 34px rgba(46, 204, 113, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 10px 0 var(--game-border), 0 18px 46px rgba(46, 204, 113, 0.6);
+    }
+}
+
+.playAgain:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.07);
+}
+
+.playAgain:active {
+    transform: translateY(7px);
+    box-shadow: 0 2px 0 var(--game-border);
+}
+
+.btnLabel {
+    position: relative;
+    z-index: 4;
+}
+
+.btnShine {
+    position: absolute;
+    top: -50%;
+    bottom: -50%;
+    width: 45%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: translateX(-170%) skewX(-18deg);
+}
+
+.playAgain:hover .btnShine {
+    animation: shineSweep 0.9s var(--ease-out);
+}
+
+.secondary {
+    background: linear-gradient(180deg, var(--accent-cyan), var(--mission-blue-dark));
+    color: #fff;
+    border: 4px solid #123a63;
+    box-shadow: 0 8px 0 #123a63;
+}
+
+.secondary:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+}
+
+.secondary:active {
+    transform: translateY(5px);
+    box-shadow: 0 2px 0 #123a63;
+}
+
+.ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 3px dashed var(--glass-border);
+    box-shadow: none;
+    font-size: 0.82rem;
+}
+
+.ghost:hover {
+    color: var(--foreground);
+    border-color: var(--accent-mint);
+    background: color-mix(in srgb, var(--accent-mint) 10%, transparent);
+}
+
+.hint {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.2rem 0 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hint kbd {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1.5px solid var(--glass-border);
+    background: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+
+.avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 0.68rem;
+    font-weight: 950;
+    color: #05230f;
+    background: linear-gradient(140deg, var(--accent-lime), var(--accent-mint));
+}
+
+/* confetti ----------------------------------------------------------------- */
+.confetti {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.confettiPiece {
+    position: absolute;
+    top: -20px;
+    width: 9px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0.9;
+    animation-name: confettiFall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-30px) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(105vh) rotate(720deg);
+        opacity: 0.9;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stat:nth-child(3) {
+        grid-column: span 2;
+    }
+}

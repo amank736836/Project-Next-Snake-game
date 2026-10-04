@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import connectToDatabase from "@/lib/db";
+import connectToDatabase, { hasDatabase } from "@/lib/db";
 import Score from "@/models/Score";
 import { foulWords } from "@/lib/foulWords";
+import { upsertScore } from "@/lib/memoryScores";
 
 export async function POST(req: Request) {
     try {
@@ -16,8 +17,16 @@ export async function POST(req: Request) {
             sanitizedName = "Anonymous";
         }
 
+        if (!hasDatabase()) {
+            const stored = upsertScore(sanitizedName, score);
+            return NextResponse.json(
+                { message: "Score added/updated successfully (in-memory).", score: stored, demo: true },
+                { status: 201 }
+            );
+        }
+
         await connectToDatabase();
-        let existingScore = await Score.findOne({ name: sanitizedName });
+        const existingScore = await Score.findOne({ name: sanitizedName });
 
         if (existingScore) {
             existingScore.latestScore = score;
@@ -41,7 +50,8 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json({ message: "Score added/updated successfully." }, { status: 201 });
-    } catch (err: any) {
-        return NextResponse.json({ message: err.message }, { status: 400 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Unexpected error";
+        return NextResponse.json({ message }, { status: 400 });
     }
 }
