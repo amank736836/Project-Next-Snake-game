@@ -44,6 +44,32 @@ Interaction & performance details:
 - The particle canvas is DPR-aware, density-adapts to viewport width, and suspends off-screen.
 - Numeric animations run on `requestAnimationFrame` and only update state from animation frames.
 
+## 📐 Responsive behaviour
+
+The layout is driven by *how much room each component actually has*, not just the viewport,
+so the same component works as a wide page and as a narrow sidebar.
+
+| Range | Mission hub | Hall of fame | Game screen |
+| --- | --- | --- | --- |
+| **< 640px** (phones) | Single column, full-width panel | Tabs (Highest / Recent) + inline back button | Portrait D-pad or joystick below the board |
+| **640 – 1023px** (tablets) | Single column, wider panel | Both boards side by side, one shared back button | Same as phones |
+| **≥ 1024px** (laptops/desktops) | 3-column grid: boards · hub · boards (tracks never below 240px, so a board can't be crushed) | Page view, no tabs | Side control columns; board width yields to them so nothing overflows |
+| **Landscape phones** (height ≤ 500px) | — | — | Board and thumb pad sit **side by side** so the page never scrolls |
+
+Implementation notes:
+
+- **Container queries** are used where a component's width differs from the viewport:
+  the leaderboard (`container: leaderboard`) switches between tabs and side-by-side boards,
+  each score card (`container: card`) restyles its rows when narrow, and the game header
+  (`container-type: inline-size`) hides the session-best badge / pause label before the
+  player name can collide with the score.
+- **Header counters use `margin-block: auto`** for vertical centring — `justify-content: center`
+  on an overflowing flex column pushes content above the viewport, where it can't be scrolled to.
+- **Control buttons use inline SVG arrows** instead of emoji glyphs (⬆️/➡️), which render
+  inconsistently and can disappear entirely depending on the platform's emoji font.
+- Panels size via `min-height: min(Xpx, ~56vh)` and the brand mark via a `--mark-size` clamp,
+  so the hero row fits short laptop windows instead of spilling.
+
 ## 🧱 Tech stack
 
 - **Next.js 16** App Router, Turbopack, React Compiler enabled

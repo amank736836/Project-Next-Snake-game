@@ -22,12 +22,32 @@ interface ControlsProps {
 const DIRS = ["ArrowUp", "ArrowLeft", "ArrowRight", "ArrowDown"] as const;
 type Dir = typeof DIRS[number];
 
-const GLYPH: Record<Dir, string> = {
-    ArrowUp: "⬆️",
-    ArrowDown: "⬇️",
-    ArrowLeft: "⬅️",
-    ArrowRight: "➡️",
+const ARROW_ROTATION: Record<Dir, number> = {
+    ArrowUp: 0,
+    ArrowRight: 90,
+    ArrowDown: 180,
+    ArrowLeft: -90,
 };
+
+function ArrowIcon({ dir }: { dir: Dir }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            aria-hidden="true"
+            style={{ transform: `rotate(${ARROW_ROTATION[dir]}deg)`, display: "block" }}
+        >
+            <path
+                d="M12 3.5 19 12h-4.2v8.5H9.2V12H5l7-8.5Z"
+                fill="currentColor"
+                stroke="rgba(0,0,0,0.25)"
+                strokeWidth="1"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
+}
 
 interface JoystickProps {
     stickPos: { x: number; y: number };
@@ -119,7 +139,7 @@ export default function Controls({
                 aria-label="Move up"
                 type="button"
             >
-                <span className={styles.glyph}>{GLYPH.ArrowUp}</span>
+                <span className={styles.glyph}><ArrowIcon dir="ArrowUp" /></span>
             </button>
 
             <button
@@ -128,7 +148,7 @@ export default function Controls({
                 aria-label="Move left"
                 type="button"
             >
-                <span className={styles.glyph}>{GLYPH.ArrowLeft}</span>
+                <span className={styles.glyph}><ArrowIcon dir="ArrowLeft" /></span>
             </button>
 
             <span className={styles.centerBadge} aria-hidden="true">
@@ -142,7 +162,7 @@ export default function Controls({
                 aria-label="Move right"
                 type="button"
             >
-                <span className={styles.glyph}>{GLYPH.ArrowRight}</span>
+                <span className={styles.glyph}><ArrowIcon dir="ArrowRight" /></span>
             </button>
 
             <button
@@ -151,7 +171,7 @@ export default function Controls({
                 aria-label="Move down"
                 type="button"
             >
-                <span className={styles.glyph}>{GLYPH.ArrowDown}</span>
+                <span className={styles.glyph}><ArrowIcon dir="ArrowDown" /></span>
             </button>
         </div>
     );
@@ -194,7 +214,7 @@ export default function Controls({
                             aria-label={`Move ${dir.replace("Arrow", "").toLowerCase()}`}
                             type="button"
                         >
-                            <span className={styles.sideGlyph}>{GLYPH[dir]}</span>
+                            <span className={styles.sideGlyph}><ArrowIcon dir={dir} /></span>
                             <span className={styles.sideKey}>{dir.replace("Arrow", "").toUpperCase()}</span>
                         </button>
                     ))}

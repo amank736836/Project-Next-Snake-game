@@ -345,3 +345,48 @@
         height: 56px;
     }
 }
+
+/* Short landscape phones: keep the pad and joystick thumb-sized */
+@media (orientation: landscape) and (max-height: 500px) {
+    .dpad {
+        margin-top: 0.75rem;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .dpadBtn {
+        width: 58px;
+        height: 48px;
+    }
+
+    .centerBadge {
+        width: 46px;
+        height: 46px;
+        font-size: 1.2rem;
+    }
+
+    .joystickWrapper {
+        margin-top: 0.75rem !important;
+        gap: 0.5rem;
+    }
+
+    .joystickBase {
+        width: 104px;
+        height: 104px;
+    }
+
+    .joystickHandle {
+        width: 50px;
+        height: 50px;
+    }
+
+    .joystickHint,
+    .sideLabel {
+        display: none;
+    }
+
+    .sideBtnRect {
+        width: 104px;
+        height: 62px;
+    }
+}

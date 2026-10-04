@@ -83,6 +83,21 @@ function ScoreRow({ entry, index, value, max, isYou, baseRank }: RowProps) {
     );
 }
 
+function Chevron({ dir }: { dir: "left" | "right" }) {
+    return (
+        <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+            style={{ transform: dir === "left" ? "rotate(180deg)" : undefined }}
+        >
+            <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+}
+
 export default function Leaderboard({
     allScores, latestScores, tab, setTab, page, totalPages, onPageChange, onBack,
     isDashboard, isLoading = false, playerName, isDemo
@@ -158,16 +173,20 @@ export default function Leaderboard({
 
                         {totalPages > 1 && tab === "highest" && (
                             <div className={styles.pagination}>
-                                <button onClick={() => onPageChange(page - 1)} disabled={page === 1} aria-label="Previous page">◀</button>
+                                <button onClick={() => onPageChange(page - 1)} disabled={page === 1} aria-label="Previous page">
+                                    <Chevron dir="left" />
+                                </button>
                                 <span className={styles.pageInfo}>
                                     {page} <em>/</em> {totalPages}
                                 </span>
-                                <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages} aria-label="Next page">▶</button>
+                                <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages} aria-label="Next page">
+                                    <Chevron dir="right" />
+                                </button>
                             </div>
                         )}
 
                         {!isDashboard && (
-                            <button className={`${styles.backBtn} mobile-only`} onClick={onBack} type="button">
+                            <button className={styles.backMobile} onClick={onBack} type="button">
                                 BACK TO MISSION ↩️
                             </button>
                         )}
@@ -206,7 +225,7 @@ export default function Leaderboard({
                         )}
 
                         {!isDashboard && (
-                            <button className={`${styles.backBtn} mobile-only`} onClick={onBack} type="button">
+                            <button className={styles.backMobile} onClick={onBack} type="button">
                                 BACK TO MISSION ↩️
                             </button>
                         )}
@@ -216,7 +235,7 @@ export default function Leaderboard({
 
             {!isDashboard && (
                 <button
-                    className={`${styles.backBtn} ${styles.backBtnWide} desktop-only`}
+                    className={styles.backWide}
                     onClick={onBack}
                     onPointerDown={ripples.spawn}
                     type="button"

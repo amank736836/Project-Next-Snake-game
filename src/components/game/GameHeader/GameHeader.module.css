@@ -1,4 +1,7 @@
 .header {
+    /* query container: the header is only as wide as the board, so its layout
+       must respond to its own width rather than the viewport */
+    container-type: inline-size;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -41,6 +44,13 @@
     align-items: center;
     gap: 9px;
     min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+}
+
+/* the avatar must always survive flex shrinking */
+.avatar {
+    flex: 0 0 auto;
 }
 
 .avatar {
@@ -230,7 +240,7 @@
     display: block;
 }
 
-@media (max-width: 560px) {
+@container (max-width: 560px) {
     .userName {
         max-width: 7ch;
     }
@@ -245,5 +255,45 @@
 
     .best {
         display: none;
+    }
+}
+
+/* Narrow boards (landscape phones, small phones): the header has very little
+   horizontal budget — hide the niceties before they can overlap the name. */
+@container (max-width: 430px) {
+    .best {
+        display: none;
+    }
+
+    .userName {
+        max-width: 6ch;
+        font-size: 0.85rem;
+    }
+
+    .header {
+        padding: 8px 12px;
+        gap: 6px;
+    }
+}
+
+/* When space is really tight the avatar carries the identity instead */
+@container (max-width: 400px) {
+    .pauseLabel {
+        display: none;
+    }
+
+    .pauseBtn {
+        padding: 8px 10px;
+    }
+}
+
+@container (max-width: 300px) {
+    .userName,
+    .speedMeter {
+        display: none;
+    }
+
+    .header {
+        padding: 8px 10px;
     }
 }
