@@ -1,0 +1,174 @@
+{
+  "$comment": "Boundary / hostile / unusual values. `documentedStatus` is what the CURRENT build returns (verified by the API suite); `expectedStatus` is what a hardened API should return. Mismatches are tracked as bugs — see harness/bugs/known-issues.md.",
+  "submissions": [
+    {
+      "case": "score omitted entirely",
+      "raw": {
+        "name": "NoScore"
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-001",
+      "notes": "Record is stored with score=undefined and never appears in any leaderboard."
+    },
+    {
+      "case": "score sent as string",
+      "raw": {
+        "name": "StrScore",
+        "score": "7"
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-001",
+      "notes": "String is stored verbatim and breaks numeric ordering in the leaderboard."
+    },
+    {
+      "case": "score sent as object (NoSQL-injection shaped)",
+      "raw": {
+        "name": "ObjScore",
+        "score": {
+          "$ne": 1
+        }
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-001",
+      "notes": "In-memory mode stores the object; a MongoDB deployment rejects it at the Mongoose cast layer."
+    },
+    {
+      "case": "negative score",
+      "raw": {
+        "name": "Negative",
+        "score": -5
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400
+    },
+    {
+      "case": "fractional score",
+      "raw": {
+        "name": "Float",
+        "score": 2.7
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "notes": "The client only ever produces integers (one point per apple)."
+    },
+    {
+      "case": "absurdly high score",
+      "raw": {
+        "name": "TopForge",
+        "score": 999999999
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 201,
+      "notes": "No server-side plausibility check exists — a forged client can top the board (covered by TC-119/TC-119b)."
+    },
+    {
+      "case": "null score",
+      "raw": {
+        "name": "NullScore",
+        "score": null
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-001"
+    },
+    {
+      "case": "empty name",
+      "raw": {
+        "name": "",
+        "score": 2
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-003",
+      "notes": "The UI blocks this (playerName.trim() === ''), the API does not."
+    },
+    {
+      "case": "whitespace-only name",
+      "raw": {
+        "name": "   ",
+        "score": 2
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-003"
+    },
+    {
+      "case": "5000 character name",
+      "raw": {
+        "name": "<5000 x 'A'>",
+        "score": 1
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-003",
+      "notes": "UI caps input at 20 chars ([a-zA-Z0-9 ]); the API has no limit and the name is echoed back in leaderboard payloads."
+    },
+    {
+      "case": "HTML/script payload in name",
+      "raw": {
+        "name": "<script>alert(1)</script>",
+        "score": 4
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "bug": "BUG-003",
+      "notes": "Stored raw. React escapes it on render, so it is a stored-data hygiene issue, not a live XSS."
+    },
+    {
+      "case": "name with surrounding whitespace",
+      "raw": {
+        "name": "  Padded  ",
+        "score": 6
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 201,
+      "notes": "No trimming happens, so '  Padded  ' and 'Padded' become two separate players."
+    },
+    {
+      "case": "unicode name",
+      "raw": {
+        "name": "Игрок",
+        "score": 6
+      },
+      "documentedStatus": 201,
+      "expectedStatus": 400,
+      "notes": "UI input filter keeps only [a-zA-Z0-9 ], so unicode can only arrive through the API."
+    },
+    {
+      "case": "name that is a foul-word substring (false positive)",
+      "raw": {
+        "name": "Hancock",
+        "score": 8
+      },
+      "documentedStatus": "renamed to Anonymous",
+      "expectedStatus": 201,
+      "bug": "BUG-002",
+      "notes": "Foul filter uses String.includes() on the lower-cased name, so 'cock' matches inside 'hancock'."
+    },
+    {
+      "case": "duplicate leaderboard names after sanitisation",
+      "raw": {
+        "name": "shit",
+        "score": 50
+      },
+      "documentedStatus": "merged into the Anonymous record",
+      "expectedStatus": "distinct handling per submission",
+      "bug": "BUG-004",
+      "notes": "Every blocked name collapses into the single player 'Anonymous', so unrelated runs merge and overwrite each other."
+    },
+    {
+      "case": "concurrent submissions of the same name",
+      "raw": {
+        "name": "RaceProbe",
+        "score": 1,
+        "count": 10
+      },
+      "documentedStatus": "single record, visits incremented",
+      "expectedStatus": "single record, visits incremented",
+      "notes": "In-memory mode is single threaded. The MongoDB path does findOne + save without an atomic upsert and can create duplicate documents — UNKNOWN / REQUIRES VALIDATION, tracked as BUG-018 (TC-135)."
+    }
+  ]
+}

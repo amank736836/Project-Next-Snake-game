@@ -1,0 +1,157 @@
+✔ TC-056 | a standard submission is accepted with 201 and stored verbatim (77.09972ms)
+✔ TC-057 | a lower follow-up run keeps the best score and refreshes the latest (27.965719ms)
+✔ TC-058 | an equal follow-up run does not create a duplicate row (32.526514ms)
+✔ TC-059 | the response advertises demo mode when no database is configured (17.991877ms)
+✔ TC-060 | a blocked name is renamed to Anonymous (7.852047ms)
+✔ TC-060b | characterisation: a legitimate name containing a blocked substring is anonymised (9.832214ms)
+✖ TC-060c | KNOWN ISSUE (BUG-004): different blocked names merge into one shared record (17.224485ms) # BUG-004 — every sanitised submission collapses into the single player 'Anonymous'
+✔ TC-060d | characterisation: unrelated runs are merged under 'Anonymous' today (15.105593ms)
+✔ TC-061 | a missing name is rejected with 400 (3.849892ms)
+✔ TC-062 | an empty JSON object is rejected with 400 (3.493793ms)
+✔ TC-063 | malformed JSON is rejected with 400 and a JSON error body (4.275064ms)
+✔ TC-064 | an empty body is rejected with 400 (10.22903ms)
+✔ TC-065 | a JSON array is rejected with 400 (3.58459ms)
+✔ TC-066 | a non-string name is rejected with 400 (3.465043ms)
+✖ TC-067 | KNOWN ISSUE (BUG-001): a missing score is accepted as 201 (3.822611ms) # BUG-001 — the API must reject submissions without a numeric score
+✖ TC-068 | KNOWN ISSUE (BUG-001): non-numeric scores are stored verbatim (4.343193ms) # BUG-001 — string/object scores must be rejected
+✖ TC-069 | KNOWN ISSUE (BUG-003): the API accepts names the UI would never allow (3.773858ms) # BUG-003 — enforce the 20-char [a-zA-Z0-9 ] rule server-side
+✔ TC-069b | today's documented behaviour for the same inputs (characterisation) (18.517182ms)
+✔ TC-070 | returns a page of scores with pagination metadata (78.781036ms)
+✔ TC-071 | default pagination is page 1 with five rows (5.94641ms)
+✔ TC-072 | rows are ordered by best score, descending (7.204727ms)
+✔ TC-073 | a repeat player keeps their best score and appears once (5.088272ms)
+✔ TC-074 | players whose only score is zero never appear (5.410222ms)
+✔ TC-075 | page 2 returns the next slice without overlapping page 1 (12.425244ms)
+✔ TC-076 | a page beyond the end returns an empty list, not an error (6.259352ms)
+✔ TC-077 | the limit parameter is honoured (3.207292ms)
+✖ TC-078 | KNOWN ISSUE (BUG-005): a non-numeric page is echoed back as null instead of being rejected (3.732382ms) # BUG-005 — parseInt() results are used without validation
+✔ TC-078b | characterisation: invalid page/limit values in today's build (14.408594ms)
+✔ TC-079 | a very large limit is not capped (documented behaviour, abuse vector) (3.614071ms)
+✔ TC-080 | returns a plain JSON array, capped at five entries (43.125121ms)
+✔ TC-081 | the most recently updated player is returned first (16.14956ms)
+✔ TC-082 | ordering follows recency, not score (18.30687ms)
+✔ TC-083 | zero-score rows are excluded from recent hunts (8.836597ms)
+✔ TC-083b | every row carries the fields the UI renders (9.307012ms)
+✔ TC-084 | each endpoint only accepts its documented method (57.496231ms)
+✔ TC-085 | OPTIONS advertises the allowed methods for the write endpoint (6.69799ms)
+✔ TC-086 | HEAD on the page and the API succeeds without a body (11.859081ms)
+✔ TC-087 | a JSON content type is not required to parse the body (13.998451ms)
+✔ TC-088 | unknown routes answer 404 without leaking internals (45.791196ms)
+✖ TC-089 | KNOWN ISSUE (BUG-013): there is no payload size or rate limit (20.29228ms) # BUG-013 — no body cap and no rate limiting on addScore
+✔ TC-089b | characterisation: a 1.2 MB body is accepted (documented) (16.852232ms)
+✔ TC-089c | concurrent submissions of one player do not fork the row (55.956471ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 6
+ℹ duration_ms 1227.676587
+
+✖ failing tests:
+
+test at harness/automation/api/addScore.test.mjs:79:1
+✖ TC-060c | KNOWN ISSUE (BUG-004): different blocked names merge into one shared record (17.224485ms) # BUG-004 — every sanitised submission collapses into the single player 'Anonymous'
+  AssertionError [ERR_ASSERTION]: expected: two different players must not share one leaderboard row
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:86:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/api/addScore.test.mjs:133:1
+✖ TC-067 | KNOWN ISSUE (BUG-001): a missing score is accepted as 201 (3.822611ms) # BUG-001 — the API must reject submissions without a numeric score
+  AssertionError [ERR_ASSERTION]: expected 400 (BUG-001)
+  
+  201 !== 400
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:136:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 201,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/api/addScore.test.mjs:139:1
+✖ TC-068 | KNOWN ISSUE (BUG-001): non-numeric scores are stored verbatim (4.343193ms) # BUG-001 — string/object scores must be rejected
+  AssertionError [ERR_ASSERTION]: expected 400 for score sent as string (BUG-001)
+  
+  201 !== 400
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:142:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 201,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/api/addScore.test.mjs:146:1
+✖ TC-069 | KNOWN ISSUE (BUG-003): the API accepts names the UI would never allow (3.773858ms) # BUG-003 — enforce the 20-char [a-zA-Z0-9 ] rule server-side
+  AssertionError [ERR_ASSERTION]: expected 400 for empty name (BUG-003)
+  
+  201 !== 400
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:150:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 201,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/api/highestScore.test.mjs:94:1
+✖ TC-078 | KNOWN ISSUE (BUG-005): a non-numeric page is echoed back as null instead of being rejected (3.732382ms) # BUG-005 — parseInt() results are used without validation
+  AssertionError [ERR_ASSERTION]: expected: invalid input falls back to page 1 (or 400)
+  
+  null !== 1
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/highestScore.test.mjs:99:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/api/methods-and-body.test.mjs:52:1
+✖ TC-089 | KNOWN ISSUE (BUG-013): there is no payload size or rate limit (20.29228ms) # BUG-013 — no body cap and no rate limiting on addScore
+  AssertionError [ERR_ASSERTION]: expected a size/rate rejection, got 201
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/methods-and-body.test.mjs:55:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

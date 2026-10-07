@@ -1,0 +1,18 @@
+{
+  "$comment": "Deterministic dataset for leaderboard ordering + pagination tests. Submitted in array order, oldest first; the suite then asserts rank order and page boundaries. Names are suffixed per run so the dataset cannot collide with real rows.",
+  "seed": [
+    { "name": "SeedLow", "score": 2 },
+    { "name": "SeedHigh", "score": 12 },
+    { "name": "SeedMid", "score": 6 },
+    { "name": "SeedRepeatA", "score": 3 },
+    { "name": "SeedRepeatA", "score": 9 },
+    { "name": "SeedHidden", "score": 0 }
+  ],
+  "expectations": {
+    "orderBy": "highestScore descending, then score descending",
+    "SeedRepeatA": { "highestScore": 9, "latestScore": 9, "visits": 2 },
+    "SeedHidden": "stored (score 0) but never returned by highestScore or latestScore",
+    "pageSize": 5,
+    "firstPageRanksStartAt": 1
+  }
+}

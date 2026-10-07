@@ -1,0 +1,223 @@
+TAP version 13
+# Subtest: TC-110 | characterisation: which security headers the deployment sends today
+ok 1 - TC-110 | characterisation: which security headers the deployment sends today
+  ---
+  duration_ms: 40.391616
+  type: 'test'
+  ...
+# present: (none)
+# missing: content-security-policy, x-content-type-options, x-frame-options, referrer-policy, strict-transport-security, permissions-policy
+# Subtest: TC-110b | KNOWN ISSUE (BUG-015): no security headers are configured
+not ok 2 - TC-110b | KNOWN ISSUE (BUG-015): no security headers are configured # TODO BUG-015 — add CSP, X-Content-Type-Options, Referrer-Policy, frame-ancestors and HSTS at the edge
+  ---
+  duration_ms: 8.402525
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:33:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    missing security headers: content-security-policy, x-content-type-options, x-frame-options, referrer-policy, strict-transport-security, permissions-policy
+    + actual - expected
+    
+    + [
+    +   'content-security-policy',
+    +   'x-content-type-options',
+    +   'x-frame-options',
+    +   'referrer-policy',
+    +   'strict-transport-security',
+    +   'permissions-policy'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'content-security-policy'
+    1: 'x-content-type-options'
+    2: 'x-frame-options'
+    3: 'referrer-policy'
+    4: 'strict-transport-security'
+    5: 'permissions-policy'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:39:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-111 | KNOWN ISSUE (BUG-015): the server advertises its framework
+not ok 3 - TC-111 | KNOWN ISSUE (BUG-015): the server advertises its framework # TODO BUG-015 — X-Powered-By: Next.js is an unnecessary fingerprinting signal
+  ---
+  duration_ms: 5.98362
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:43:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'Next.js'
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual: 'Next.js'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:48:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-112 | cross-origin writes are not authorised by CORS, but are also not blocked
+ok 4 - TC-112 | cross-origin writes are not authorised by CORS, but are also not blocked
+  ---
+  duration_ms: 11.285419
+  type: 'test'
+  ...
+# cross-origin POST returned 201; ACAO header: (absent)
+# Subtest: TC-113 | OPTIONS preflight is answered without granting cross-origin access
+ok 5 - TC-113 | OPTIONS preflight is answered without granting cross-origin access
+  ---
+  duration_ms: 5.211072
+  type: 'test'
+  ...
+# Subtest: TC-114 | KNOWN ISSUE (BUG-014): internal error details are echoed to clients
+not ok 6 - TC-114 | KNOWN ISSUE (BUG-014): internal error details are echoed to clients # TODO BUG-014 — return generic errors (500) instead of raw driver/runtime messages
+  ---
+  duration_ms: 5.324121
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:72:1'
+  failureType: 'testCodeFailure'
+  error: 'raw exception text must not reach clients'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: "Cannot read properties of undefined (reading 'toLowerCase')"
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:77:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-114b | characterisation: the 400 body for an invalid payload
+ok 7 - TC-114b | characterisation: the 400 body for an invalid payload
+  ---
+  duration_ms: 6.979928
+  type: 'test'
+  ...
+# Subtest: TC-115 | the API answers with JSON, so responses cannot be sniffed into markup
+ok 8 - TC-115 | the API answers with JSON, so responses cannot be sniffed into markup
+  ---
+  duration_ms: 4.413378
+  type: 'test'
+  ...
+# Subtest: TC-116 | a script payload is stored as inert data and echoed as JSON
+ok 9 - TC-116 | a script payload is stored as inert data and echoed as JSON
+  ---
+  duration_ms: 45.324568
+  type: 'test'
+  ...
+# Subtest: TC-117 | SQL/NoSQL-shaped input cannot change query behaviour in demo mode
+ok 10 - TC-117 | SQL/NoSQL-shaped input cannot change query behaviour in demo mode
+  ---
+  duration_ms: 8.348196
+  type: 'test'
+  ...
+# Subtest: TC-118 | a leading-$ page parameter cannot be turned into a query operator
+ok 11 - TC-118 | a leading-$ page parameter cannot be turned into a query operator
+  ---
+  duration_ms: 5.823124
+  type: 'test'
+  ...
+# Subtest: TC-119 | KNOWN ISSUE (BUG-016): scores are unauthenticated and unverifiable
+not ok 12 - TC-119 | KNOWN ISSUE (BUG-016): scores are unauthenticated and unverifiable # TODO BUG-016 — any client can post an arbitrary score; consider signed submissions or server-side validation
+  ---
+  duration_ms: 18.46258
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/security/input-and-abuse.test.mjs:45:1'
+  failureType: 'testCodeFailure'
+  error: 'expected: implausible scores are rejected'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/input-and-abuse.test.mjs:53:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-119b | characterisation: a forged top score is accepted today
+ok 13 - TC-119b | characterisation: a forged top score is accepted today
+  ---
+  duration_ms: 12.48116
+  type: 'test'
+  ...
+# Subtest: TC-120 | KNOWN ISSUE (BUG-013): no rate limiting on the write endpoint
+not ok 14 - TC-120 | KNOWN ISSUE (BUG-013): no rate limiting on the write endpoint # TODO BUG-013 — 50 rapid submissions all succeed; add a rate limit at the edge
+  ---
+  duration_ms: 160.131904
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/security/input-and-abuse.test.mjs:71:1'
+  failureType: 'testCodeFailure'
+  error: 'expected at least one 429 after flooding the endpoint'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/input-and-abuse.test.mjs:79:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-120b | characterisation: the flood above is accepted (documented)
+ok 15 - TC-120b | characterisation: the flood above is accepted (documented)
+  ---
+  duration_ms: 59.454579
+  type: 'test'
+  ...
+# 25 rapid writes in 59ms, statuses: 201
+# Subtest: TC-121 | oversized and hostile payloads never crash the process
+ok 16 - TC-121 | oversized and hostile payloads never crash the process
+  ---
+  duration_ms: 7.468865
+  type: 'test'
+  ...
+# Subtest: TC-122 | no credential files are tracked by git
+ok 17 - TC-122 | no credential files are tracked by git
+  ---
+  duration_ms: 5.876069
+  type: 'test'
+  ...
+# Subtest: TC-123 | no hard-coded secrets exist in tracked source
+ok 18 - TC-123 | no hard-coded secrets exist in tracked source
+  ---
+  duration_ms: 7.784313
+  type: 'test'
+  ...
+# Subtest: TC-124 | the database password can only come from the environment
+ok 19 - TC-124 | the database password can only come from the environment
+  ---
+  duration_ms: 4.411822
+  type: 'test'
+  ...
+# Subtest: TC-125 | no runtime stack traces are shipped to the browser bundle
+ok 20 - TC-125 | no runtime stack traces are shipped to the browser bundle
+  ---
+  duration_ms: 3.779127
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 5
+# duration_ms 722.235807

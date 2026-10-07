@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: TC-100 | the pre-rendered shell responds quickly
+ok 1 - TC-100 | the pre-rendered shell responds quickly
+  ---
+  duration_ms: 145.333727
+  type: 'test'
+  ...
+# GET /  p50=3.12ms p95=5.55ms bytes=12201
+# Subtest: TC-101 | leaderboard reads stay in the single-digit-millisecond range
+ok 2 - TC-101 | leaderboard reads stay in the single-digit-millisecond range
+  ---
+  duration_ms: 87.950314
+  type: 'test'
+  ...
+# highestScore p50=2.56ms p95=5.88ms bytes=690
+# Subtest: TC-102 | recent hunts reads stay fast as well
+ok 3 - TC-102 | recent hunts reads stay fast as well
+  ---
+  duration_ms: 80.83716
+  type: 'test'
+  ...
+# latestScore p50=2.42ms p95=4.52ms bytes=600
+# Subtest: TC-103 | score writes stay fast under repeated use
+ok 4 - TC-103 | score writes stay fast under repeated use
+  ---
+  duration_ms: 83.905704
+  type: 'test'
+  ...
+# addScore p50=2.66ms p95=3.65ms bytes=209
+# Subtest: TC-104 | the server survives a 50-request concurrent burst on the read path
+ok 5 - TC-104 | the server survives a 50-request concurrent burst on the read path
+  ---
+  duration_ms: 120.069411
+  type: 'test'
+  ...
+# burst: 50/50 ok in 120ms (~417 req/s)
+# Subtest: TC-105 | write latency does not degrade as the demo board grows
+ok 6 - TC-105 | write latency does not degrade as the demo board grows
+  ---
+  duration_ms: 73.776012
+  type: 'test'
+  ...
+# first=5.71ms last=3.17ms
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 695.226604

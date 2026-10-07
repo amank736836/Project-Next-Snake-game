@@ -1,0 +1,11 @@
+# server log (server-db-unreachable-RUN-2026-001.log) — exit paths only
+
+> snake-game-nextjs@0.1.0 start
+> next start
+
+▲ Next.js 16.1.6
+- Local:         http://localhost:3101
+- Network:       http://169.254.0.21:3101
+
+✓ Starting...
+✓ Ready in 440ms

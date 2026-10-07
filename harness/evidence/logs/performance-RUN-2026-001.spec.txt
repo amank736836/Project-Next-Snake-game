@@ -1,0 +1,20 @@
+✔ TC-100 | the pre-rendered shell responds quickly (145.333727ms)
+ℹ GET /  p50=3.12ms p95=5.55ms bytes=12201
+✔ TC-101 | leaderboard reads stay in the single-digit-millisecond range (87.950314ms)
+ℹ highestScore p50=2.56ms p95=5.88ms bytes=690
+✔ TC-102 | recent hunts reads stay fast as well (80.83716ms)
+ℹ latestScore p50=2.42ms p95=4.52ms bytes=600
+✔ TC-103 | score writes stay fast under repeated use (83.905704ms)
+ℹ addScore p50=2.66ms p95=3.65ms bytes=209
+✔ TC-104 | the server survives a 50-request concurrent burst on the read path (120.069411ms)
+ℹ burst: 50/50 ok in 120ms (~417 req/s)
+✔ TC-105 | write latency does not degrade as the demo board grows (73.776012ms)
+ℹ first=5.71ms last=3.17ms
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 695.226604

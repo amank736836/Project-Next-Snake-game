@@ -1,0 +1,165 @@
+✔ TC-026 | filter list is loaded and non-trivial (1.14357ms)
+✔ TC-027 | every entry is a non-empty string (0.886762ms)
+✖ TC-028 | KNOWN ISSUE (BUG-008): every entry should be lower-case, otherwise it can never match (1.647356ms) # BUG-008 — the route compares against a lower-cased name, so upper-case entries are dead
+✖ TC-029 | KNOWN ISSUE (BUG-009): the list contains duplicate entries (1.460602ms) # BUG-009 — duplicated words (e.g. 'tranny', 'kinky') bloat the list without adding coverage
+✔ TC-001 | board constants: 20x20 grid, snake starts as a single segment (1.612102ms)
+✔ TC-002 | generateFood always returns a cell inside the 20x20 board (4.058734ms)
+✔ TC-003 | generateFood never lands on the snake body (3.739971ms)
+✔ TC-004 | obfuscate/deobfuscate round-trips a mission exactly (0.54153ms)
+✔ TC-005 | obfuscate output is base64 and hides the player name (0.466882ms)
+✔ TC-006 | deobfuscate returns null for garbage instead of throwing (0.18723ms)
+✔ TC-007 | deobfuscate survives a truncated / tampered save (0.276332ms)
+✔ TC-008 | getSnakePartRotation maps each direction to the right head class (0.159411ms)
+✔ TC-009 | getSnakePartRotation falls back to head-right for a zero vector (0.247392ms)
+✔ TC-010 | KNOWN ISSUE (BUG-006): generateFood recurses forever when the board is full (26.739985ms) # BUG-006 — unbounded recursion instead of graceful failure
+✔ TC-011 | KNOWN ISSUE (BUG-007): obfuscate throws DOMException for non-Latin1 names (0.308265ms) # BUG-007 — btoa() rejects characters above U+00FF
+✔ TC-012 | obfuscation is position-dependent (XOR index stream), so identical saves differ (0.230468ms)
+✔ TC-025 | NODE_ENV=production starts with an empty leaderboard (no demo seed) (1.829006ms)
+✔ TC-013 | a development process is seeded with six demo players (1.938237ms)
+✔ TC-014 | listHighest sorts by highest score, descending (0.280628ms)
+✔ TC-015 | listHighest paginates with a 5-per-page window by default (0.222201ms)
+✔ TC-016 | listHighest excludes entries whose score is not greater than zero (0.303258ms)
+✔ TC-017 | listLatest returns the five most recently updated players first (0.508858ms)
+✔ TC-018 | listLatest caps the response at five entries (0.382763ms)
+✔ TC-019 | upsertScore creates a brand new player with full score history (0.248185ms)
+✔ TC-020 | upsertScore keeps the best score, records the latest, and counts visits (0.172768ms)
+✔ TC-021 | upsertScore refreshes updatedAt so the player moves to the top of 'recent hunts' (0.444937ms)
+✔ TC-022 | player identity is case-sensitive (0.462109ms)
+✔ TC-023 | writes with an undefined score are stored but hidden from every leaderboard (0.202141ms)
+✔ TC-024 | KNOWN ISSUE (BUG-005): NaN page/limit silently return an empty board instead of an error (0.141279ms) # BUG-005 — parseInt() output is never validated in the API route
+ℹ tests 29
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 5
+ℹ duration_ms 2489.812159
+
+✖ failing tests:
+
+test at harness/automation/unit/foul-words.test.mjs:25:1
+✖ TC-028 | KNOWN ISSUE (BUG-008): every entry should be lower-case, otherwise it can never match (1.647356ms) # BUG-008 — the route compares against a lower-cased name, so upper-case entries are dead
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'X',
+  +   'XXX',
+  +   'Judas',
+  +   'Benedict Arnold'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/unit/foul-words.test.mjs:30:12)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1047:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      at Test.postRun (node:internal/test_runner/test:1173:19)
+      at Test.run (node:internal/test_runner/test:1101:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'X', 'XXX', 'Judas', 'Benedict Arnold' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/unit/foul-words.test.mjs:34:1
+✖ TC-029 | KNOWN ISSUE (BUG-009): the list contains duplicate entries (1.460602ms) # BUG-009 — duplicated words (e.g. 'tranny', 'kinky') bloat the list without adding coverage
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'naughty',
+  +   'kinky',
+  +   'tease',
+  +   'tranny',
+  +   'kraut',
+  +   'wetback',
+  +   'coon',
+  +   'faggot',
+  +   'dyke',
+  +   'pansy',
+  +   'fairy',
+  +   'beaner',
+  +   'spic',
+  +   'hillbilly',
+  +   'cracker',
+  +   'polack',
+  +   'redneck',
+  +   'kike',
+  +   'swindler',
+  +   'cheat',
+  +   'crook',
+  +   'robber',
+  +   'fraud',
+  +   'charlatan',
+  +   'deceiver',
+  +   'liar',
+  +   'pretender',
+  +   'betrayer',
+  +   'rat',
+  +   'snake',
+  +   'chamar',
+  +   'paki',
+  +   'kanjar',
+  +   'kshatriya',
+  +   'brahmin',
+  +   'shudra',
+  +   'vaishya',
+  +   'bhaiya',
+  +   'chinki',
+  +   'bong',
+  +   'mallu',
+  +   'londa',
+  +   'bania',
+  +   'baniya',
+  +   'madrasi',
+  +   'ghati',
+  +   'gorkha',
+  +   'kutta',
+  +   'bihari',
+  +   'marathi',
+  +   'dalit',
+  +   'muslim',
+  +   'christian',
+  +   'hindu',
+  +   'bhangi',
+  +   'dhobi',
+  +   'rajput',
+  +   'teli'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/unit/foul-words.test.mjs:39:12)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1047:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      at Test.postRun (node:internal/test_runner/test:1173:19)
+      at Test.run (node:internal/test_runner/test:1101:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'naughty',   'kinky',     'tease',     'tranny',
+      'kraut',     'wetback',   'coon',      'faggot',
+      'dyke',      'pansy',     'fairy',     'beaner',
+      'spic',      'hillbilly', 'cracker',   'polack',
+      'redneck',   'kike',      'swindler',  'cheat',
+      'crook',     'robber',    'fraud',     'charlatan',
+      'deceiver',  'liar',      'pretender', 'betrayer',
+      'rat',       'snake',     'chamar',    'paki',
+      'kanjar',    'kshatriya', 'brahmin',   'shudra',
+      'vaishya',   'bhaiya',    'chinki',    'bong',
+      'mallu',     'londa',     'bania',     'baniya',
+      'madrasi',   'ghati',     'gorkha',    'kutta',
+      'bihari',    'marathi',   'dalit',     'muslim',
+      'christian', 'hindu',     'bhangi',    'dhobi',
+      'rajput',    'teli'
+    ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,60 @@
+✔ TC-049 | Mission Hub renders the start flow, the name field and the control selector (10.655691ms)
+✔ TC-050 | Mission Hub shows the validation alert and the resume button when applicable (2.659306ms)
+✔ TC-051 | Leaderboard renders ranked rows, marks the current player and disables out-of-range paging (3.078975ms)
+✔ TC-052 | Leaderboard explains emptiness instead of showing blank cards (1.388114ms)
+✔ TC-053 | Leaderboard shows shimmer skeletons while scores load (2.523718ms)
+✔ TC-054 | Game Over dialog is an accessible modal reporting the run summary (1.969466ms)
+✔ TC-055 | a record run switches the dialog copy and celebrates (2.473767ms)
+✔ TC-055b | board, controls and header expose their state to assistive tech (19.682714ms)
+✔ TC-030 | the game mounts into the menu screen and loads the leaderboard (25.952323ms)
+✔ TC-031 | starting without a name is blocked and raises the name alert (6.085005ms)
+✔ TC-032 | starting with a name enters the playing state with a reset board (4.243584ms)
+✔ TC-033 | the snake advances one cell per interval and its body follows the head (4.043043ms)
+✔ TC-034 | portal walls: leaving the board wraps to the opposite side (8.986428ms)
+✔ TC-035 | keyboard control: arrows and WASD steer, reversing is ignored (4.075366ms)
+✔ TC-036 | keystrokes are ignored while the name input has focus (138.289947ms)
+✔ TC-037 | an arrow key on the menu starts the mission for a named player (3.300354ms)
+✔ TC-038 | eating an apple scores a point, grows the snake and respawns the apple (3.693034ms)
+✔ TC-039 | the step time shortens by one millisecond per apple, down to the 55 ms floor (23.285178ms)
+✔ TC-040 | hitting its own body ends the run, persists the best score and posts the score (7.408448ms)
+✔ TC-041 | pause stores an obfuscated mission and resume restores it (4.923534ms)
+✔ TC-042 | a corrupt save does not disturb the current run (3.07173ms)
+✖ TC-042b | KNOWN ISSUE (BUG-011): a corrupt save leaves the RESUME MISSION button active forever (3.237096ms) # BUG-011 — handleResume() bails out without clearing the unreadable save or hasSavedGame
+✔ TC-043 | theme toggle flips the document attribute and is persisted (4.212871ms)
+✔ TC-044 | a stored session best is restored on mount (2.928357ms)
+✔ TC-045 | a paused save from a previous visit enables the resume button (2.727523ms)
+✔ TC-046 | leaderboard paging stays inside the available range (2.801826ms)
+✔ TC-047 | a failing scores API degrades to empty boards instead of crashing (2.134771ms)
+✔ TC-048 | a snake shorter than four segments cannot self-collide (minimum scoring run) (3.072683ms)
+✔ TC-090 | the home page renders the document shell with metadata (44.42885ms)
+✔ TC-091 | the theme is bootstrapped before hydration to avoid a flash (7.876246ms)
+✔ TC-092 | a loading placeholder is rendered for the pre-hydration state (7.468182ms)
+✔ TC-093 | the page is served with a cache policy suitable for a static shell (6.713709ms)
+✔ TC-093b | the API never returns HTML (no content-type sniffing surface) (6.689521ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 1
+ℹ duration_ms 4246.467715
+
+✖ failing tests:
+
+test at harness/automation/ui/game-hook.test.mjs:313:1
+✖ TC-042b | KNOWN ISSUE (BUG-011): a corrupt save leaves the RESUME MISSION button active forever (3.237096ms) # BUG-011 — handleResume() bails out without clearing the unreadable save or hasSavedGame
+  AssertionError [ERR_ASSERTION]: expected: the unreadable save is dropped
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/ui/game-hook.test.mjs:321:12)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

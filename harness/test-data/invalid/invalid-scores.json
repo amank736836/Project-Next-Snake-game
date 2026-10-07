@@ -1,0 +1,37 @@
+{
+  "$comment": "Payloads the API must REJECT. `expectStatus` is the requirement; `actualStatus` is filled in by the suite run and recorded in harness/test-results.",
+  "submissions": [
+    {
+      "case": "missing name",
+      "raw": { "score": 5 },
+      "expectStatus": 400,
+      "notes": "Route reads name.toLowerCase() without a guard."
+    },
+    {
+      "case": "empty JSON object",
+      "raw": {},
+      "expectStatus": 400
+    },
+    {
+      "case": "malformed JSON body",
+      "raw": "{\"name\":",
+      "expectStatus": 400
+    },
+    {
+      "case": "JSON array instead of object",
+      "raw": "[]",
+      "expectStatus": 400
+    },
+    {
+      "case": "empty body",
+      "raw": "",
+      "expectStatus": 400
+    },
+    {
+      "case": "name of wrong type (number)",
+      "raw": { "name": 123, "score": 5 },
+      "expectStatus": 400,
+      "notes": "Number has no .toLowerCase()."
+    }
+  ]
+}
