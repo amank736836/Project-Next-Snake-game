@@ -1,0 +1,37 @@
+{
+  "$comment": "Valid score submissions. Every entry must be accepted with HTTP 201 (see TC-056/TC-057). `expectStored` describes what the API must write.",
+  "submissions": [
+    {
+      "case": "standard player",
+      "payload": { "name": "Nagini", "score": 42 },
+      "expectStatus": 201,
+      "expectStored": { "name": "Nagini", "score": 42, "highestScore": 42, "latestScore": 42 }
+    },
+    {
+      "case": "lower score from a returning player keeps the highest score",
+      "payload": { "name": "Nagini", "score": 9 },
+      "expectStatus": 201,
+      "expectStored": { "name": "Nagini", "score": 42, "highestScore": 42, "latestScore": 9 },
+      "requiresPrevious": true
+    },
+    {
+      "case": "score of exactly zero is stored but hidden from leaderboards",
+      "payload": { "name": "ZeroScorer", "score": 0 },
+      "expectStatus": 201,
+      "expectStored": { "name": "ZeroScorer", "score": 0 },
+      "notes": "Both leaderboard queries filter with score > 0."
+    },
+    {
+      "case": "multi word display name",
+      "payload": { "name": "Player Two", "score": 5 },
+      "expectStatus": 201,
+      "expectStored": { "name": "Player Two", "score": 5 }
+    },
+    {
+      "case": "numeric single character name",
+      "payload": { "name": "7", "score": 3 },
+      "expectStatus": 201,
+      "expectStored": { "name": "7", "score": 3 }
+    }
+  ]
+}

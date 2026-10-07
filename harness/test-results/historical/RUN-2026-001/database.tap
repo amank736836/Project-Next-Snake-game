@@ -1,0 +1,86 @@
+TAP version 13
+# Subtest: TC-130 | every endpoint reports the connection failure instead of hanging
+ok 1 - TC-130 | every endpoint reports the connection failure instead of hanging
+  ---
+  duration_ms: 1604.115414
+  type: 'test'
+  ...
+# GET /api/snakeGame/highestScore → 400 "connect ECONNREFUSED 127.0.0.1:27099" in 1576ms
+# GET /api/snakeGame/latestScore → 400 "connect ECONNREFUSED 127.0.0.1:27099" in 11ms
+# POST /api/snakeGame/addScore → 400 "connect ECONNREFUSED 127.0.0.1:27099" in 14ms
+# Subtest: TC-131 | a failed connection is cached, so subsequent calls fail fast
+ok 2 - TC-131 | a failed connection is cached, so subsequent calls fail fast
+  ---
+  duration_ms: 25.425072
+  type: 'test'
+  ...
+# first=18ms second=7ms
+# Subtest: TC-131b | KNOWN ISSUE (BUG-017): a rejected connection promise is cached forever (no recovery without restart)
+not ok 3 - TC-131b | KNOWN ISSUE (BUG-017): a rejected connection promise is cached forever (no recovery without restart) # TODO BUG-017 — db.ts caches the rejected promise; the process never reconnects after a transient outage
+  ---
+  duration_ms: 14.385589
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/database/degradation.test.mjs:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected: the server falls back to the in-memory board instead of failing forever
+    + actual - expected
+    
+    + undefined
+    - true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/database/degradation.test.mjs:45:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-132 | the front end is not broken by an unreachable database: the API still answers JSON
+ok 4 - TC-132 | the front end is not broken by an unreachable database: the API still answers JSON
+  ---
+  duration_ms: 14.680017
+  type: 'test'
+  ...
+# Subtest: TC-133 | a first-time player is persisted and readable
+ok 5 - TC-133 | a first-time player is persisted and readable # SKIP NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+  ---
+  duration_ms: 1.140386
+  type: 'test'
+  ...
+# Subtest: TC-134 | a repeat player updates the existing document instead of inserting
+ok 6 - TC-134 | a repeat player updates the existing document instead of inserting # SKIP NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+  ---
+  duration_ms: 0.200308
+  type: 'test'
+  ...
+# Subtest: TC-135 | concurrent first-time writes must not fork a player into duplicates
+ok 7 - TC-135 | concurrent first-time writes must not fork a player into duplicates # SKIP NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+  ---
+  duration_ms: 0.137921
+  type: 'test'
+  ...
+# Subtest: TC-136 | documents expose the timestamps the UI relies on
+ok 8 - TC-136 | documents expose the timestamps the UI relies on # SKIP NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+  ---
+  duration_ms: 0.103525
+  type: 'test'
+  ...
+# Subtest: TC-137 | ordering and pagination match the documented contract in MongoDB mode
+ok 9 - TC-137 | ordering and pagination match the documented contract in MongoDB mode # SKIP NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+  ---
+  duration_ms: 0.195681
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 5
+# todo 1
+# duration_ms 1922.84042

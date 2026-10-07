@@ -1,0 +1,43 @@
+✔ TC-130 | every endpoint reports the connection failure instead of hanging (1604.115414ms)
+ℹ GET /api/snakeGame/highestScore → 400 "connect ECONNREFUSED 127.0.0.1:27099" in 1576ms
+ℹ GET /api/snakeGame/latestScore → 400 "connect ECONNREFUSED 127.0.0.1:27099" in 11ms
+ℹ POST /api/snakeGame/addScore → 400 "connect ECONNREFUSED 127.0.0.1:27099" in 14ms
+✔ TC-131 | a failed connection is cached, so subsequent calls fail fast (25.425072ms)
+ℹ first=18ms second=7ms
+✖ TC-131b | KNOWN ISSUE (BUG-017): a rejected connection promise is cached forever (no recovery without restart) (14.385589ms) # BUG-017 — db.ts caches the rejected promise; the process never reconnects after a transient outage
+✔ TC-132 | the front end is not broken by an unreachable database: the API still answers JSON (14.680017ms)
+﹣ TC-133 | a first-time player is persisted and readable (1.140386ms) # NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+﹣ TC-134 | a repeat player updates the existing document instead of inserting (0.200308ms) # NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+﹣ TC-135 | concurrent first-time writes must not fork a player into duplicates (0.137921ms) # NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+﹣ TC-136 | documents expose the timestamps the UI relies on (0.103525ms) # NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+﹣ TC-137 | ordering and pagination match the documented contract in MongoDB mode (0.195681ms) # NOT_EXECUTED: no MongoDB available — set HARNESS_MONGODB_URL and re-run npm run test:database. Target: http://127.0.0.1:3101
+ℹ tests 9
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 5
+ℹ todo 1
+ℹ duration_ms 1922.84042
+
+✖ failing tests:
+
+test at harness/automation/database/degradation.test.mjs:40:1
+✖ TC-131b | KNOWN ISSUE (BUG-017): a rejected connection promise is cached forever (no recovery without restart) (14.385589ms) # BUG-017 — db.ts caches the rejected promise; the process never reconnects after a transient outage
+  AssertionError [ERR_ASSERTION]: expected: the server falls back to the in-memory board instead of failing forever
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/database/degradation.test.mjs:45:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

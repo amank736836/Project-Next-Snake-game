@@ -1,0 +1,360 @@
+TAP version 13
+# Subtest: TC-056 | a standard submission is accepted with 201 and stored verbatim
+ok 1 - TC-056 | a standard submission is accepted with 201 and stored verbatim
+  ---
+  duration_ms: 79.048779
+  type: 'test'
+  ...
+# Subtest: TC-057 | a lower follow-up run keeps the best score and refreshes the latest
+ok 2 - TC-057 | a lower follow-up run keeps the best score and refreshes the latest
+  ---
+  duration_ms: 20.865925
+  type: 'test'
+  ...
+# Subtest: TC-058 | an equal follow-up run does not create a duplicate row
+ok 3 - TC-058 | an equal follow-up run does not create a duplicate row
+  ---
+  duration_ms: 23.270577
+  type: 'test'
+  ...
+# Subtest: TC-059 | the response advertises demo mode when no database is configured
+ok 4 - TC-059 | the response advertises demo mode when no database is configured
+  ---
+  duration_ms: 13.694199
+  type: 'test'
+  ...
+# Subtest: TC-060 | a blocked name is renamed to Anonymous
+ok 5 - TC-060 | a blocked name is renamed to Anonymous
+  ---
+  duration_ms: 8.638504
+  type: 'test'
+  ...
+# Subtest: TC-060b | characterisation: a legitimate name containing a blocked substring is anonymised
+ok 6 - TC-060b | characterisation: a legitimate name containing a blocked substring is anonymised
+  ---
+  duration_ms: 7.040043
+  type: 'test'
+  ...
+# Subtest: TC-060c | KNOWN ISSUE (BUG-004): different blocked names merge into one shared record
+not ok 7 - TC-060c | KNOWN ISSUE (BUG-004): different blocked names merge into one shared record # TODO BUG-004 — every sanitised submission collapses into the single player 'Anonymous'
+  ---
+  duration_ms: 18.202737
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:92:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected: two different players must not share one leaderboard row
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:99:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-060d | characterisation: unrelated runs are merged under 'Anonymous' today
+ok 8 - TC-060d | characterisation: unrelated runs are merged under 'Anonymous' today
+  ---
+  duration_ms: 13.447718
+  type: 'test'
+  ...
+# Subtest: TC-061 | a missing name is rejected with 400
+ok 9 - TC-061 | a missing name is rejected with 400
+  ---
+  duration_ms: 3.162053
+  type: 'test'
+  ...
+# Subtest: TC-062 | an empty JSON object is rejected with 400
+ok 10 - TC-062 | an empty JSON object is rejected with 400
+  ---
+  duration_ms: 3.248956
+  type: 'test'
+  ...
+# Subtest: TC-063 | malformed JSON is rejected with 400 and a JSON error body
+ok 11 - TC-063 | malformed JSON is rejected with 400 and a JSON error body
+  ---
+  duration_ms: 8.894069
+  type: 'test'
+  ...
+# Subtest: TC-064 | an empty body is rejected with 400
+ok 12 - TC-064 | an empty body is rejected with 400
+  ---
+  duration_ms: 4.892071
+  type: 'test'
+  ...
+# Subtest: TC-065 | a JSON array is rejected with 400
+ok 13 - TC-065 | a JSON array is rejected with 400
+  ---
+  duration_ms: 3.330938
+  type: 'test'
+  ...
+# Subtest: TC-066 | a non-string name is rejected with 400
+ok 14 - TC-066 | a non-string name is rejected with 400
+  ---
+  duration_ms: 3.172028
+  type: 'test'
+  ...
+# Subtest: TC-067 | KNOWN ISSUE (BUG-001): a missing score is accepted as 201
+not ok 15 - TC-067 | KNOWN ISSUE (BUG-001): a missing score is accepted as 201 # TODO BUG-001 — the API must reject submissions without a numeric score
+  ---
+  duration_ms: 3.116704
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:148:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected 400 (BUG-001)
+    
+    201 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 201
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:151:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-068 | KNOWN ISSUE (BUG-001): non-numeric scores are stored verbatim
+not ok 16 - TC-068 | KNOWN ISSUE (BUG-001): non-numeric scores are stored verbatim # TODO BUG-001 — string/object scores must be rejected
+  ---
+  duration_ms: 3.441459
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:154:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected 400 for score sent as string (BUG-001)
+    
+    201 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 201
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:157:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-069 | KNOWN ISSUE (BUG-003): the API accepts names the UI would never allow
+not ok 17 - TC-069 | KNOWN ISSUE (BUG-003): the API accepts names the UI would never allow # TODO BUG-003 — enforce the 20-char [a-zA-Z0-9 ] rule server-side
+  ---
+  duration_ms: 4.704113
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:161:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected 400 for empty name (BUG-003)
+    
+    201 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 201
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/addScore.test.mjs:165:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-069b | today's documented behaviour for the same inputs (characterisation)
+ok 18 - TC-069b | today's documented behaviour for the same inputs (characterisation)
+  ---
+  duration_ms: 16.162636
+  type: 'test'
+  ...
+# Subtest: TC-070 | returns a page of scores with pagination metadata
+ok 19 - TC-070 | returns a page of scores with pagination metadata
+  ---
+  duration_ms: 62.467634
+  type: 'test'
+  ...
+# Subtest: TC-071 | default pagination is page 1 with five rows
+ok 20 - TC-071 | default pagination is page 1 with five rows
+  ---
+  duration_ms: 3.583929
+  type: 'test'
+  ...
+# Subtest: TC-072 | rows are ordered by best score, descending
+ok 21 - TC-072 | rows are ordered by best score, descending
+  ---
+  duration_ms: 5.149146
+  type: 'test'
+  ...
+# Subtest: TC-073 | a repeat player keeps their best score and appears once
+ok 22 - TC-073 | a repeat player keeps their best score and appears once
+  ---
+  duration_ms: 6.04305
+  type: 'test'
+  ...
+# Subtest: TC-074 | players whose only score is zero never appear
+ok 23 - TC-074 | players whose only score is zero never appear
+  ---
+  duration_ms: 3.986334
+  type: 'test'
+  ...
+# Subtest: TC-075 | page 2 returns the next slice without overlapping page 1
+ok 24 - TC-075 | page 2 returns the next slice without overlapping page 1
+  ---
+  duration_ms: 9.84697
+  type: 'test'
+  ...
+# Subtest: TC-076 | a page beyond the end returns an empty list, not an error
+ok 25 - TC-076 | a page beyond the end returns an empty list, not an error
+  ---
+  duration_ms: 3.990716
+  type: 'test'
+  ...
+# Subtest: TC-077 | the limit parameter is honoured
+ok 26 - TC-077 | the limit parameter is honoured
+  ---
+  duration_ms: 4.448803
+  type: 'test'
+  ...
+# Subtest: TC-078 | KNOWN ISSUE (BUG-005): a non-numeric page is echoed back as null instead of being rejected
+not ok 27 - TC-078 | KNOWN ISSUE (BUG-005): a non-numeric page is echoed back as null instead of being rejected # TODO BUG-005 — parseInt() results are used without validation
+  ---
+  duration_ms: 4.318838
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/api/highestScore.test.mjs:94:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected: invalid input falls back to page 1 (or 400)
+    
+    null !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/highestScore.test.mjs:99:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-078b | characterisation: invalid page/limit values in today's build
+ok 28 - TC-078b | characterisation: invalid page/limit values in today's build
+  ---
+  duration_ms: 14.117728
+  type: 'test'
+  ...
+# Subtest: TC-079 | a very large limit is not capped (documented behaviour, abuse vector)
+ok 29 - TC-079 | a very large limit is not capped (documented behaviour, abuse vector)
+  ---
+  duration_ms: 3.502573
+  type: 'test'
+  ...
+# Subtest: TC-080 | returns a plain JSON array, capped at five entries
+ok 30 - TC-080 | returns a plain JSON array, capped at five entries
+  ---
+  duration_ms: 40.855721
+  type: 'test'
+  ...
+# Subtest: TC-081 | the most recently updated player is returned first
+ok 31 - TC-081 | the most recently updated player is returned first
+  ---
+  duration_ms: 12.0248
+  type: 'test'
+  ...
+# Subtest: TC-082 | ordering follows recency, not score
+ok 32 - TC-082 | ordering follows recency, not score
+  ---
+  duration_ms: 15.378832
+  type: 'test'
+  ...
+# Subtest: TC-083 | zero-score rows are excluded from recent hunts
+ok 33 - TC-083 | zero-score rows are excluded from recent hunts
+  ---
+  duration_ms: 7.885187
+  type: 'test'
+  ...
+# Subtest: TC-083b | every row carries the fields the UI renders
+ok 34 - TC-083b | every row carries the fields the UI renders
+  ---
+  duration_ms: 14.867458
+  type: 'test'
+  ...
+# Subtest: TC-084 | each endpoint only accepts its documented method
+ok 35 - TC-084 | each endpoint only accepts its documented method
+  ---
+  duration_ms: 59.704143
+  type: 'test'
+  ...
+# Subtest: TC-085 | OPTIONS advertises the allowed methods for the write endpoint
+ok 36 - TC-085 | OPTIONS advertises the allowed methods for the write endpoint
+  ---
+  duration_ms: 6.275045
+  type: 'test'
+  ...
+# Subtest: TC-086 | HEAD on the page and the API succeeds without a body
+ok 37 - TC-086 | HEAD on the page and the API succeeds without a body
+  ---
+  duration_ms: 11.698135
+  type: 'test'
+  ...
+# Subtest: TC-087 | a JSON content type is not required to parse the body
+ok 38 - TC-087 | a JSON content type is not required to parse the body
+  ---
+  duration_ms: 9.4924
+  type: 'test'
+  ...
+# Subtest: TC-088 | unknown routes answer 404 without leaking internals
+ok 39 - TC-088 | unknown routes answer 404 without leaking internals
+  ---
+  duration_ms: 42.649127
+  type: 'test'
+  ...
+# Subtest: TC-089 | KNOWN ISSUE (BUG-013): there is no payload size or rate limit
+not ok 40 - TC-089 | KNOWN ISSUE (BUG-013): there is no payload size or rate limit # TODO BUG-013 — no body cap and no rate limiting on addScore
+  ---
+  duration_ms: 14.581404
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/api/methods-and-body.test.mjs:51:1'
+  failureType: 'testCodeFailure'
+  error: 'expected a size/rate rejection, got 201'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/api/methods-and-body.test.mjs:54:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-089b | characterisation: a 1.2 MB body is accepted (documented)
+ok 41 - TC-089b | characterisation: a 1.2 MB body is accepted (documented)
+  ---
+  duration_ms: 14.398807
+  type: 'test'
+  ...
+# Subtest: TC-089c | concurrent submissions of one player do not fork the row
+ok 42 - TC-089c | concurrent submissions of one player do not fork the row
+  ---
+  duration_ms: 42.656671
+  type: 'test'
+  ...
+1..42
+# tests 42
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 6
+# duration_ms 1053.037651

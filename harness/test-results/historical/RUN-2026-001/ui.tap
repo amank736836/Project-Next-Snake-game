@@ -1,0 +1,224 @@
+TAP version 13
+# Subtest: TC-049 | Mission Hub renders the start flow, the name field and the control selector
+ok 1 - TC-049 | Mission Hub renders the start flow, the name field and the control selector
+  ---
+  duration_ms: 10.655691
+  type: 'test'
+  ...
+# Subtest: TC-050 | Mission Hub shows the validation alert and the resume button when applicable
+ok 2 - TC-050 | Mission Hub shows the validation alert and the resume button when applicable
+  ---
+  duration_ms: 2.659306
+  type: 'test'
+  ...
+# Subtest: TC-051 | Leaderboard renders ranked rows, marks the current player and disables out-of-range paging
+ok 3 - TC-051 | Leaderboard renders ranked rows, marks the current player and disables out-of-range paging
+  ---
+  duration_ms: 3.078975
+  type: 'test'
+  ...
+# Subtest: TC-052 | Leaderboard explains emptiness instead of showing blank cards
+ok 4 - TC-052 | Leaderboard explains emptiness instead of showing blank cards
+  ---
+  duration_ms: 1.388114
+  type: 'test'
+  ...
+# Subtest: TC-053 | Leaderboard shows shimmer skeletons while scores load
+ok 5 - TC-053 | Leaderboard shows shimmer skeletons while scores load
+  ---
+  duration_ms: 2.523718
+  type: 'test'
+  ...
+# Subtest: TC-054 | Game Over dialog is an accessible modal reporting the run summary
+ok 6 - TC-054 | Game Over dialog is an accessible modal reporting the run summary
+  ---
+  duration_ms: 1.969466
+  type: 'test'
+  ...
+# Subtest: TC-055 | a record run switches the dialog copy and celebrates
+ok 7 - TC-055 | a record run switches the dialog copy and celebrates
+  ---
+  duration_ms: 2.473767
+  type: 'test'
+  ...
+# Subtest: TC-055b | board, controls and header expose their state to assistive tech
+ok 8 - TC-055b | board, controls and header expose their state to assistive tech
+  ---
+  duration_ms: 19.682714
+  type: 'test'
+  ...
+# Subtest: TC-030 | the game mounts into the menu screen and loads the leaderboard
+ok 9 - TC-030 | the game mounts into the menu screen and loads the leaderboard
+  ---
+  duration_ms: 25.952323
+  type: 'test'
+  ...
+# Subtest: TC-031 | starting without a name is blocked and raises the name alert
+ok 10 - TC-031 | starting without a name is blocked and raises the name alert
+  ---
+  duration_ms: 6.085005
+  type: 'test'
+  ...
+# Subtest: TC-032 | starting with a name enters the playing state with a reset board
+ok 11 - TC-032 | starting with a name enters the playing state with a reset board
+  ---
+  duration_ms: 4.243584
+  type: 'test'
+  ...
+# Subtest: TC-033 | the snake advances one cell per interval and its body follows the head
+ok 12 - TC-033 | the snake advances one cell per interval and its body follows the head
+  ---
+  duration_ms: 4.043043
+  type: 'test'
+  ...
+# Subtest: TC-034 | portal walls: leaving the board wraps to the opposite side
+ok 13 - TC-034 | portal walls: leaving the board wraps to the opposite side
+  ---
+  duration_ms: 8.986428
+  type: 'test'
+  ...
+# Subtest: TC-035 | keyboard control: arrows and WASD steer, reversing is ignored
+ok 14 - TC-035 | keyboard control: arrows and WASD steer, reversing is ignored
+  ---
+  duration_ms: 4.075366
+  type: 'test'
+  ...
+# Subtest: TC-036 | keystrokes are ignored while the name input has focus
+ok 15 - TC-036 | keystrokes are ignored while the name input has focus
+  ---
+  duration_ms: 138.289947
+  type: 'test'
+  ...
+# Subtest: TC-037 | an arrow key on the menu starts the mission for a named player
+ok 16 - TC-037 | an arrow key on the menu starts the mission for a named player
+  ---
+  duration_ms: 3.300354
+  type: 'test'
+  ...
+# Subtest: TC-038 | eating an apple scores a point, grows the snake and respawns the apple
+ok 17 - TC-038 | eating an apple scores a point, grows the snake and respawns the apple
+  ---
+  duration_ms: 3.693034
+  type: 'test'
+  ...
+# Subtest: TC-039 | the step time shortens by one millisecond per apple, down to the 55 ms floor
+ok 18 - TC-039 | the step time shortens by one millisecond per apple, down to the 55 ms floor
+  ---
+  duration_ms: 23.285178
+  type: 'test'
+  ...
+# Subtest: TC-040 | hitting its own body ends the run, persists the best score and posts the score
+ok 19 - TC-040 | hitting its own body ends the run, persists the best score and posts the score
+  ---
+  duration_ms: 7.408448
+  type: 'test'
+  ...
+# Subtest: TC-041 | pause stores an obfuscated mission and resume restores it
+ok 20 - TC-041 | pause stores an obfuscated mission and resume restores it
+  ---
+  duration_ms: 4.923534
+  type: 'test'
+  ...
+# Subtest: TC-042 | a corrupt save does not disturb the current run
+ok 21 - TC-042 | a corrupt save does not disturb the current run
+  ---
+  duration_ms: 3.07173
+  type: 'test'
+  ...
+# Subtest: TC-042b | KNOWN ISSUE (BUG-011): a corrupt save leaves the RESUME MISSION button active forever
+not ok 22 - TC-042b | KNOWN ISSUE (BUG-011): a corrupt save leaves the RESUME MISSION button active forever # TODO BUG-011 — handleResume() bails out without clearing the unreadable save or hasSavedGame
+  ---
+  duration_ms: 3.237096
+  type: 'test'
+  location: '/home/user/Project-Next-Snake-game/harness/automation/ui/game-hook.test.mjs:313:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    expected: the unreadable save is dropped
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/ui/game-hook.test.mjs:321:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-043 | theme toggle flips the document attribute and is persisted
+ok 23 - TC-043 | theme toggle flips the document attribute and is persisted
+  ---
+  duration_ms: 4.212871
+  type: 'test'
+  ...
+# Subtest: TC-044 | a stored session best is restored on mount
+ok 24 - TC-044 | a stored session best is restored on mount
+  ---
+  duration_ms: 2.928357
+  type: 'test'
+  ...
+# Subtest: TC-045 | a paused save from a previous visit enables the resume button
+ok 25 - TC-045 | a paused save from a previous visit enables the resume button
+  ---
+  duration_ms: 2.727523
+  type: 'test'
+  ...
+# Subtest: TC-046 | leaderboard paging stays inside the available range
+ok 26 - TC-046 | leaderboard paging stays inside the available range
+  ---
+  duration_ms: 2.801826
+  type: 'test'
+  ...
+# Subtest: TC-047 | a failing scores API degrades to empty boards instead of crashing
+ok 27 - TC-047 | a failing scores API degrades to empty boards instead of crashing
+  ---
+  duration_ms: 2.134771
+  type: 'test'
+  ...
+# Subtest: TC-048 | a snake shorter than four segments cannot self-collide (minimum scoring run)
+ok 28 - TC-048 | a snake shorter than four segments cannot self-collide (minimum scoring run)
+  ---
+  duration_ms: 3.072683
+  type: 'test'
+  ...
+# Subtest: TC-090 | the home page renders the document shell with metadata
+ok 29 - TC-090 | the home page renders the document shell with metadata
+  ---
+  duration_ms: 44.42885
+  type: 'test'
+  ...
+# Subtest: TC-091 | the theme is bootstrapped before hydration to avoid a flash
+ok 30 - TC-091 | the theme is bootstrapped before hydration to avoid a flash
+  ---
+  duration_ms: 7.876246
+  type: 'test'
+  ...
+# Subtest: TC-092 | a loading placeholder is rendered for the pre-hydration state
+ok 31 - TC-092 | a loading placeholder is rendered for the pre-hydration state
+  ---
+  duration_ms: 7.468182
+  type: 'test'
+  ...
+# Subtest: TC-093 | the page is served with a cache policy suitable for a static shell
+ok 32 - TC-093 | the page is served with a cache policy suitable for a static shell
+  ---
+  duration_ms: 6.713709
+  type: 'test'
+  ...
+# Subtest: TC-093b | the API never returns HTML (no content-type sniffing surface)
+ok 33 - TC-093b | the API never returns HTML (no content-type sniffing surface)
+  ---
+  duration_ms: 6.689521
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 32
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 1
+# duration_ms 4246.467715

@@ -1,0 +1,4 @@
+/.env -> 404
+/.env.local -> 404
+/api/.env -> 404
+/does-not-exist -> 404

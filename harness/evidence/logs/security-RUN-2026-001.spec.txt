@@ -1,0 +1,126 @@
+✔ TC-110 | characterisation: which security headers the deployment sends today (40.391616ms)
+ℹ present: (none)
+ℹ missing: content-security-policy, x-content-type-options, x-frame-options, referrer-policy, strict-transport-security, permissions-policy
+✖ TC-110b | KNOWN ISSUE (BUG-015): no security headers are configured (8.402525ms) # BUG-015 — add CSP, X-Content-Type-Options, Referrer-Policy, frame-ancestors and HSTS at the edge
+✖ TC-111 | KNOWN ISSUE (BUG-015): the server advertises its framework (5.98362ms) # BUG-015 — X-Powered-By: Next.js is an unnecessary fingerprinting signal
+✔ TC-112 | cross-origin writes are not authorised by CORS, but are also not blocked (11.285419ms)
+ℹ cross-origin POST returned 201; ACAO header: (absent)
+✔ TC-113 | OPTIONS preflight is answered without granting cross-origin access (5.211072ms)
+✖ TC-114 | KNOWN ISSUE (BUG-014): internal error details are echoed to clients (5.324121ms) # BUG-014 — return generic errors (500) instead of raw driver/runtime messages
+✔ TC-114b | characterisation: the 400 body for an invalid payload (6.979928ms)
+✔ TC-115 | the API answers with JSON, so responses cannot be sniffed into markup (4.413378ms)
+✔ TC-116 | a script payload is stored as inert data and echoed as JSON (45.324568ms)
+✔ TC-117 | SQL/NoSQL-shaped input cannot change query behaviour in demo mode (8.348196ms)
+✔ TC-118 | a leading-$ page parameter cannot be turned into a query operator (5.823124ms)
+✖ TC-119 | KNOWN ISSUE (BUG-016): scores are unauthenticated and unverifiable (18.46258ms) # BUG-016 — any client can post an arbitrary score; consider signed submissions or server-side validation
+✔ TC-119b | characterisation: a forged top score is accepted today (12.48116ms)
+✖ TC-120 | KNOWN ISSUE (BUG-013): no rate limiting on the write endpoint (160.131904ms) # BUG-013 — 50 rapid submissions all succeed; add a rate limit at the edge
+✔ TC-120b | characterisation: the flood above is accepted (documented) (59.454579ms)
+ℹ 25 rapid writes in 59ms, statuses: 201
+✔ TC-121 | oversized and hostile payloads never crash the process (7.468865ms)
+✔ TC-122 | no credential files are tracked by git (5.876069ms)
+✔ TC-123 | no hard-coded secrets exist in tracked source (7.784313ms)
+✔ TC-124 | the database password can only come from the environment (4.411822ms)
+✔ TC-125 | no runtime stack traces are shipped to the browser bundle (3.779127ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 5
+ℹ duration_ms 722.235807
+
+✖ failing tests:
+
+test at harness/automation/security/http-surface.test.mjs:33:1
+✖ TC-110b | KNOWN ISSUE (BUG-015): no security headers are configured (8.402525ms) # BUG-015 — add CSP, X-Content-Type-Options, Referrer-Policy, frame-ancestors and HSTS at the edge
+  AssertionError [ERR_ASSERTION]: missing security headers: content-security-policy, x-content-type-options, x-frame-options, referrer-policy, strict-transport-security, permissions-policy
+  + actual - expected
+  
+  + [
+  +   'content-security-policy',
+  +   'x-content-type-options',
+  +   'x-frame-options',
+  +   'referrer-policy',
+  +   'strict-transport-security',
+  +   'permissions-policy'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:39:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'content-security-policy', 'x-content-type-options', 'x-frame-options', 'referrer-policy', 'strict-transport-security', 'permissions-policy' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/security/http-surface.test.mjs:43:1
+✖ TC-111 | KNOWN ISSUE (BUG-015): the server advertises its framework (5.98362ms) # BUG-015 — X-Powered-By: Next.js is an unnecessary fingerprinting signal
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Next.js'
+  - undefined
+  
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:48:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Next.js',
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at harness/automation/security/http-surface.test.mjs:72:1
+✖ TC-114 | KNOWN ISSUE (BUG-014): internal error details are echoed to clients (5.324121ms) # BUG-014 — return generic errors (500) instead of raw driver/runtime messages
+  AssertionError [ERR_ASSERTION]: raw exception text must not reach clients
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/http-surface.test.mjs:77:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "Cannot read properties of undefined (reading 'toLowerCase')",
+    expected: /toLowerCase|ECONNREFUSED|Cannot read propert/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at harness/automation/security/input-and-abuse.test.mjs:45:1
+✖ TC-119 | KNOWN ISSUE (BUG-016): scores are unauthenticated and unverifiable (18.46258ms) # BUG-016 — any client can post an arbitrary score; consider signed submissions or server-side validation
+  AssertionError [ERR_ASSERTION]: expected: implausible scores are rejected
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/input-and-abuse.test.mjs:53:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at harness/automation/security/input-and-abuse.test.mjs:71:1
+✖ TC-120 | KNOWN ISSUE (BUG-013): no rate limiting on the write endpoint (160.131904ms) # BUG-013 — 50 rapid submissions all succeed; add a rate limit at the edge
+  AssertionError [ERR_ASSERTION]: expected at least one 429 after flooding the endpoint
+      at TestContext.<anonymous> (file:///home/user/Project-Next-Snake-game/harness/automation/security/input-and-abuse.test.mjs:79:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
