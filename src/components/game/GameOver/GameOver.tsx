@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import styles from "./GameOver.module.css";
 import { useCountUp, useRipples } from "../hooks/useUiMotion";
 import RippleLayer from "../ui/Ripple";
@@ -28,14 +28,55 @@ export default function GameOver({
     const ripples = useRipples();
     const letters = useMemo(() => TITLE.split(""), []);
     const initials = (playerName || "?").trim().charAt(0).toUpperCase();
+    const panelRef = useRef<HTMLDivElement>(null);
 
+    /**
+     * Modal behaviour: move focus into the dialog on open, keep Tab inside it
+     * while it is open, and hand focus back to whatever opened it on close.
+     * Without this, `aria-modal="true"` is a promise the DOM does not keep —
+     * keyboard users can still reach the board and the hub behind the overlay.
+     */
     useEffect(() => {
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Enter") onPlayAgain();
-            if (e.key === "Escape") onMainMenu();
+        const previouslyFocused = document.activeElement as HTMLElement | null;
+        const panel = panelRef.current;
+
+        const focusables = () =>
+            Array.from(
+                panel?.querySelectorAll<HTMLElement>(
+                    'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                ) ?? []
+            ).filter((el) => el.offsetParent !== null);
+
+        const first = focusables()[0];
+        (panel ?? first)?.focus();
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Enter") { onPlayAgain(); return; }
+            if (e.key === "Escape") { onMainMenu(); return; }
+            if (e.key !== "Tab") return;
+
+            const items = focusables();
+            if (items.length === 0) {
+                e.preventDefault();
+                panel?.focus();
+                return;
+            }
+            const edge = e.shiftKey ? items[0] : items[items.length - 1];
+            const active = document.activeElement;
+            if (active === edge || active === panel) {
+                e.preventDefault();
+                (e.shiftKey ? items[items.length - 1] : items[0]).focus();
+            } else if (active instanceof HTMLElement && !panel?.contains(active)) {
+                e.preventDefault();
+                items[0].focus();
+            }
         };
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
+
+        window.addEventListener("keydown", onKeyDown);
+        return () => {
+            window.removeEventListener("keydown", onKeyDown);
+            previouslyFocused?.focus?.();
+        };
     }, [onPlayAgain, onMainMenu]);
 
     return (
@@ -59,7 +100,7 @@ export default function GameOver({
                 </div>
             )}
 
-            <div className={`${styles.panel} ${isNewRecord ? styles.record : ""}`}>
+            <div className={`${styles.panel} ${isNewRecord ? styles.record : ""}`} ref={panelRef} tabIndex={-1}>
                 <span className={styles.panelGlow} aria-hidden="true" />
                 <span className={styles.cornerSparkle} aria-hidden="true">✦</span>
 

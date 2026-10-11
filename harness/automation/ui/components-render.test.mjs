@@ -101,8 +101,10 @@ test("TC-051 | Leaderboard renders ranked rows, marks the current player and dis
   assert.match(html, /you<\/em>/, "the signed-in player is tagged");
   assert.match(html, /demo/, "demo chip marks the in-memory leaderboard");
   assert.match(html, /1 <em>\/<\/em> 3/, "pagination indicator shows the current page");
-  assert.match(html, /<button disabled="" aria-label="Previous page">/, "the first page has no predecessor");
-  assert.doesNotMatch(html, /<button disabled="" aria-label="Next page">/, "next page is available");
+  // Attribute order is not part of the contract — match on the attributes.
+  assert.match(html, /<button[^>]*\sdisabled(=""|\b)[^>]*aria-label="Previous page"[^>]*>/, "the first page has no predecessor");
+  assert.doesNotMatch(html, /<button[^>]*\sdisabled(=""|\b)[^>]*aria-label="Next page"[^>]*>/, "next page is available");
+  assert.match(html, /aria-label="Previous page"[^>]*type="button"|type="button"[^>]*aria-label="Previous page"/, "pagination buttons declare type=button");
 });
 
 test("TC-052 | Leaderboard explains emptiness instead of showing blank cards", () => {

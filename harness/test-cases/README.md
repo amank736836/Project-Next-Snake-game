@@ -42,14 +42,21 @@ documented with the fields of the project template:
 | [`ui-shell/`](ui-shell/) | TC-043, TC-049, TC-050, TC-054, TC-055, TC-055b, TC-090…TC-093b | Component markup, accessibility, theming, served shell |
 | [`performance/`](performance/) | TC-100…TC-105 | Latency, throughput, growth |
 | [`security/`](security/) | TC-110…TC-125 | Headers, CORS, input abuse, secrets |
+| [`visual-responsive/`](visual-responsive/) | TC-300…TC-328 | Real-browser layout, contrast, focus, touch and interaction flows |
 | [`manual/`](manual/) | TC-200…TC-219 | Browser, touch, responsive, motion, deployment checks |
 
-## Coverage at a glance (RUN-2026-001)
+## Coverage at a glance (RUN-2026-001 + the 2026-10-11 visual pass)
 
 | Status | Cases |
 | --- | --- |
-| PASS | 116 |
+| PASS | 116 → **140** with the visual suite |
 | KNOWN ISSUE | 18 (BUG-001 … BUG-018; see `../bugs/known-issues.md`) |
 | NOT_EXECUTED / skipped | 5 (TC-133…TC-137, no MongoDB) |
 | Manual NOT_EXECUTED | 20 (TC-200…TC-219, no browser) |
-| Total documented | 159 (139 automated + 20 manual) |
+| Total documented | 183 (139 + 24 visual automated, 20 manual) |
+
+The visual module (`TC-300…TC-328`) was added by the UI/responsive/a11y audit of
+2026-10-11; see `../reports/ui-qa-report.md` for the defects it was written against.
+Several `manual/browser-and-visual.md` cases are now automated in that module and are
+annotated there; they stay listed because a human still has to judge the parts a
+headless browser cannot (perceived polish, DPR handling, a real deployment).

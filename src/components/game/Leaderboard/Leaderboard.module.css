@@ -31,14 +31,14 @@
     left: 6px;
     width: calc(50% - 9px);
     border-radius: 12px;
-    background: linear-gradient(180deg, #43e07a, #1f9d55);
+    background: linear-gradient(180deg, var(--fill-green-from), var(--fill-green-to));
     box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
     transition: transform 0.42s var(--ease-spring), background 0.3s ease;
 }
 
 .tabPill[data-tab='recent'] {
     transform: translateX(calc(100% + 6px));
-    background: linear-gradient(180deg, var(--accent-cyan), var(--mission-blue-dark));
+    background: linear-gradient(180deg, var(--fill-cyan-from), var(--fill-cyan-to));
     box-shadow: 0 4px 12px rgba(18, 203, 196, 0.4);
 }
 
@@ -172,8 +172,7 @@
     padding: 3px 8px;
     border-radius: 999px;
     border: 1.5px dashed currentColor;
-    opacity: 0.7;
-    color: var(--accent-gold);
+    color: var(--accent-gold-ink);
 }
 
 /* Rows -------------------------------------------------------------------- */
@@ -228,6 +227,7 @@
 }
 
 .youTag {
+    flex: 0 0 auto;
     margin-left: 8px;
     font-style: normal;
     font-size: 0.6rem;
@@ -276,6 +276,17 @@
     animation: shineSweep 2.6s var(--ease-out) infinite;
 }
 
+/* Gold, silver and bronze are light fills: #fff on them measured 2.05:1,
+   2.18:1 and 4.02:1. Dark ink on the medals keeps the rank legible in both
+   themes while the metal gradients (and their glow) stay untouched. */
+.item:nth-child(1) .rank,
+.item:nth-child(2) .rank,
+.item:nth-child(3) .rank {
+    color: #1a1408;
+    border-color: rgba(0, 0, 0, 0.18);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
 .item:nth-child(1) .rank {
     background: linear-gradient(135deg, #ffd93d, #b8860b);
     box-shadow: 0 0 16px rgba(255, 215, 0, 0.6);
@@ -300,11 +311,21 @@
 }
 
 .name {
+    display: flex;
+    align-items: center;
+    /* a flex container's own text-overflow does nothing for its text node, and
+       without min-width:0 the row refuses to shrink — long names were clipped
+       mid-glyph at 1024px instead of ellipsizing */
+    min-width: 0;
+    gap: 0;
+}
+
+.nameText {
+    min-width: 0;
+    flex: 0 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: flex;
-    align-items: center;
 }
 
 .track {
@@ -578,7 +599,8 @@
     transform: translateX(-160%) skewX(-18deg);
 }
 
-.backBtn:hover .btnShine {
+.backWide:hover .btnShine,
+.backMobile:hover .btnShine {
     animation: shineSweep 0.9s var(--ease-out);
 }
 

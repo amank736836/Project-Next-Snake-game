@@ -71,7 +71,7 @@ function ScoreRow({ entry, index, value, max, isYou, baseRank }: RowProps) {
             <span className={styles.rank}>{baseRank}</span>
             <span className={styles.rowMain}>
                 <span className={styles.name}>
-                    {entry.name}
+                    <span className={styles.nameText}>{entry.name}</span>
                     {isYou && <em className={styles.youTag}>you</em>}
                 </span>
                 <span className={styles.track} aria-hidden="true">
@@ -118,20 +118,24 @@ export default function Leaderboard({
                 <div className={styles.tabSwitcher} role="tablist" aria-label="Leaderboard view">
                     <span className={styles.tabPill} data-tab={tab} aria-hidden="true" />
                     <button
+                        id="leaderboard-tab-highest"
                         className={`${styles.tabBtn} ${tab === "highest" ? styles.active : ""}`}
                         onClick={() => setTab("highest")}
                         type="button"
                         role="tab"
                         aria-selected={tab === "highest"}
+                        aria-controls="leaderboard-panel-highest"
                     >
                         🏆 HIGHEST
                     </button>
                     <button
+                        id="leaderboard-tab-recent"
                         className={`${styles.tabBtn} ${tab === "recent" ? styles.active : ""}`}
                         onClick={() => setTab("recent")}
                         type="button"
                         role="tab"
                         aria-selected={tab === "recent"}
+                        aria-controls="leaderboard-panel-recent"
                     >
                         🕒 RECENT
                     </button>
@@ -143,6 +147,9 @@ export default function Leaderboard({
                 {(tab === "highest" || !isDashboard) && (
                     <div
                         ref={highestRef}
+                        id={isDashboard ? undefined : "leaderboard-panel-highest"}
+                        role={isDashboard ? undefined : "tabpanel"}
+                        aria-labelledby={isDashboard ? undefined : "leaderboard-tab-highest"}
                         className={`${styles.section} ${highestInView ? styles.inView : ""} ${tab !== "highest" && !isDashboard ? styles.mobileHide : ""}`}
                     >
                         <span className={styles.cardGlow} aria-hidden="true" />
@@ -173,13 +180,13 @@ export default function Leaderboard({
 
                         {totalPages > 1 && tab === "highest" && (
                             <div className={styles.pagination}>
-                                <button onClick={() => onPageChange(page - 1)} disabled={page === 1} aria-label="Previous page">
+                                <button onClick={() => onPageChange(page - 1)} disabled={page === 1} aria-label="Previous page" type="button">
                                     <Chevron dir="left" />
                                 </button>
                                 <span className={styles.pageInfo}>
                                     {page} <em>/</em> {totalPages}
                                 </span>
-                                <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages} aria-label="Next page">
+                                <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages} aria-label="Next page" type="button">
                                     <Chevron dir="right" />
                                 </button>
                             </div>
@@ -197,6 +204,9 @@ export default function Leaderboard({
                 {(tab === "recent" || !isDashboard) && (
                     <div
                         ref={recentRef}
+                        id={isDashboard ? undefined : "leaderboard-panel-recent"}
+                        role={isDashboard ? undefined : "tabpanel"}
+                        aria-labelledby={isDashboard ? undefined : "leaderboard-tab-recent"}
                         className={`${styles.section} ${recentInView ? styles.inView : ""} ${tab !== "recent" && !isDashboard ? styles.mobileHide : ""}`}
                     >
                         <span className={styles.cardGlow} aria-hidden="true" />

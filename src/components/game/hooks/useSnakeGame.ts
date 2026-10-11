@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ScoreEntry, GameState, ControlType, GameMissionData } from "../types";
+import { ScoreEntry, GameState, ControlType, GameMissionData, MenuView } from "../types";
 import { generateFood, obfuscate, deobfuscate, INITIAL_SNAKE_BODY, GRID_SIZE } from "../utils";
 
 export interface RunSummary {
@@ -292,6 +292,38 @@ export const useSnakeGame = () => {
 
         fetchScores(1);
     }, [fetchScores]);
+
+    /**
+     * Put the hub ⇄ hall-of-fame switch on the history stack.
+     *
+     * Without this the app has no history entries at all, so the browser Back
+     * button (and Android's system gesture) leaves the site from any internal
+     * view instead of returning to the hub. `lastViewRef` makes the two
+     * directions idempotent: a popstate-driven view change must not push or
+     * back again, or Back/Forward would ping-pong forever.
+     */
+    const lastViewRef = useRef<MenuView>("main");
+
+    useEffect(() => {
+        const onPop = (e: PopStateEvent) => {
+            const view: MenuView = (e.state as { naginiView?: string } | null)?.naginiView === "leaderboard" ? "leaderboard" : "main";
+            lastViewRef.current = view;
+            setMenuView(view);
+        };
+        window.addEventListener("popstate", onPop);
+        return () => window.removeEventListener("popstate", onPop);
+    }, []);
+
+    useEffect(() => {
+        if (menuView === lastViewRef.current) return;
+        const previous = lastViewRef.current;
+        lastViewRef.current = menuView;
+        if (menuView === "leaderboard") {
+            window.history.pushState({ naginiView: "leaderboard" }, "");
+        } else if (previous === "leaderboard") {
+            window.history.back();
+        }
+    }, [menuView]);
 
     useEffect(() => {
         const handler = (e: KeyboardEvent) => handleDirection(e);

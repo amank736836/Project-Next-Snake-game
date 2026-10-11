@@ -1,15 +1,17 @@
 # Testing Status — Nagini · Snake Game
 
 **Snapshot:** after `RUN-2026-001` (2026-10-07, commit `1849ac4`, production build
-served with `npm start`, no `DATABASE_URL`).
+served with `npm start`, no `DATABASE_URL`), updated by the **UI / responsive /
+accessibility audit of 2026-10-11**, which added the real-browser `visual` suite and
+fixed 14 front-end defects. See [`reports/ui-qa-report.md`](reports/ui-qa-report.md).
 
 ## At a glance
 
 | Metric | Value |
 | --- | --- |
-| Automated test cases written | 139 |
-| Executed | 134 (5 skipped — need MongoDB) |
-| Passed | 116 |
+| Automated test cases written | 163 (139 + 24 browser cases) |
+| Executed | 158 (5 skipped — need MongoDB) |
+| Passed | 140 |
 | Failed (unexplained) | 0 |
 | Known-issue tests (expected failures, tracked as bugs) | 18 |
 | Manual test cases documented, not executed | 20 |
@@ -29,7 +31,14 @@ Machine-generated detail: `test-results/latest/summary.md` and
 | performance | 6 | 6 | 0 | 0 | 0.70 s | `npm run test:performance` |
 | security | 20 | 15 | 5 | 0 | 0.72 s | `npm run test:security` |
 | database | 9 | 3 | 1 | 5 | 1.92 s | `npm run test:database` |
-| **total** | **139** | **116** | **18** | **5** | **~15 s** | `npm test` |
+| visual (2026-10-11) | 24 | 24 | 0 | 0 | ~4 min | `npm run test:visual` |
+| **total** | **163** | **140** | **18** | **5** | **~4 min** | `npm test` |
+
+The `visual` durations are per-*case*, not per-*assertion*: the suite expands into 55
+node-test entries because each case runs once per viewport / theme / screen, and every
+one of those 55 passed in the 2026-10-11 run (`test-results/latest/visual.tap`). It is
+the only suite that needs a browser, and it reports SKIP rather than PASS when there is
+none.
 
 ## What is verified today
 

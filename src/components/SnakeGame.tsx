@@ -40,6 +40,26 @@ export default function SnakeGame() {
                             />
                         ) : (
                             <>
+                                {/* The hub is first in the DOM so the <h1> and the
+                                    primary controls come before the leaderboard
+                                    cards in heading order and in tab order.
+                                    The desktop grid re-places it with `order`. */}
+                                <div className="hub-section">
+                                    <MissionHub
+                                        playerName={game.playerName}
+                                        setPlayerName={game.setPlayerName}
+                                        alert={game.alert}
+                                        onStart={game.startGame}
+                                        onResume={game.handleResume}
+                                        hasSavedGame={game.hasSavedGame}
+                                        controlType={game.controlType}
+                                        setControlType={game.setControlType}
+                                        onViewLeaderboard={() => game.setMenuView("leaderboard")}
+                                        inputRef={game.inputRef}
+                                        leader={leader}
+                                    />
+                                </div>
+
                                 <div className="score-section high-scores-section desktop-only">
                                     <Leaderboard
                                         allScores={game.AllScores}
@@ -54,23 +74,6 @@ export default function SnakeGame() {
                                         isLoading={game.isLoadingScores}
                                         playerName={game.playerName}
                                         isDemo={game.isDemo}
-                                    />
-                                </div>
-
-                                {/* wrapper gives the desktop grid an explicit sizing hook */}
-                                <div className="hub-section">
-                                    <MissionHub
-                                        playerName={game.playerName}
-                                        setPlayerName={game.setPlayerName}
-                                        alert={game.alert}
-                                        onStart={game.startGame}
-                                        onResume={game.handleResume}
-                                        hasSavedGame={game.hasSavedGame}
-                                        controlType={game.controlType}
-                                        setControlType={game.setControlType}
-                                        onViewLeaderboard={() => game.setMenuView("leaderboard")}
-                                        inputRef={game.inputRef}
-                                        leader={leader}
                                     />
                                 </div>
 

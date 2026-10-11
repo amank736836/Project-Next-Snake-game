@@ -7,7 +7,7 @@ framework was added, because Node's built-in runner already provides TAP output,
 ```text
 automation/
 ├── scripts/          bash runners (build → server → suite → summary → clean shutdown)
-│   ├── run-{all,unit,api,ui,performance,security,database}.sh
+│   ├── run-{all,unit,api,ui,performance,security,database,visual}.sh
 │   ├── capture-evidence.sh
 │   └── lib/common.sh
 ├── utilities/        shared code used by the suites
@@ -22,7 +22,8 @@ automation/
 ├── ui/               jsdom + React         TC-030…TC-055b, TC-090…TC-093b
 ├── performance/      latency & throughput  TC-100…TC-105
 ├── security/         surface & abuse       TC-110…TC-125
-└── database/         persistence           TC-130…TC-137   (see ./database/README.md)
+├── database/         persistence           TC-130…TC-137   (see ./database/README.md)
+└── visual/           real browser          TC-300…TC-328   (see ./visual/README.md)
 ```
 
 ## Rules this code follows
@@ -39,8 +40,11 @@ automation/
 4. **No shared mutable state between suites.** Names are tagged per run
    (`tagName()`), and ordering assertions are relative to the fixture rows, never
    absolute — the demo store accumulates data across runs.
-5. **No new dependencies.** `jsdom` is the single dev-only exception, documented in
-   `../test-tools/jsdom.md`.
+5. **No new dependencies.** Two dev-only exceptions, both documented: `jsdom`
+   (`../test-tools/jsdom.md`) and `playwright-core` for the visual suite
+   (`./visual/README.md`). `playwright-core` deliberately does *not* download a
+   browser, so `npm install` stays fast; the suite reports SKIP when it cannot
+   find a Chromium binary rather than pretending to pass.
 6. **Servers are started and stopped by the scripts**, not by tests, so a crashed test
    cannot leak a process (`setsid` + process-group kill).
 
