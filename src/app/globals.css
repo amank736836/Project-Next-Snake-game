@@ -24,7 +24,12 @@
   --grid-line: rgba(255, 255, 255, 0.045);
 
   /* Buttons */
-  --button-green: #4caf50;
+  /* Light theme: #4caf50 on a near-white glass panel measured 2.64:1, far below
+     the 4.5:1 floor for the 13–16px labels that use it as a text colour.
+     #2a7230 is the closest Material-green hue that clears 4.5:1 against the
+     glass, the solid page background (5.05:1) and white (5.92:1, the hover fill
+     carries #fff labels). */
+  --button-green: #2a7230;
   --button-hover: #45a049;
   --mission-blue: #00d2ff;
   --mission-blue-dark: #3a7bd5;
@@ -39,7 +44,17 @@
   --accent-cyan: #12cbc4;
   --accent-violet: #8b5cf6;
   --accent-gold: #f5b301;
+  /* Amber dark enough to read on a light panel (raw gold measured 1.50:1). */
+  --accent-gold-ink: #8a6100;
   --accent-red: #ff4757;
+
+  /* Solid fills that carry WHITE 900-weight labels (CTA buttons, the active
+     control pill and the active leaderboard tab). The original neon stops
+     measured 1.7–2.0:1 against white; these clear 4.5:1 at every size used. */
+  --fill-green-from: #17803f;
+  --fill-green-to: #0d5228;
+  --fill-cyan-from: #0b7a75;
+  --fill-cyan-to: #0652dd;
 
   /* Glass + depth */
   --glass-bg: rgba(255, 255, 255, 0.72);
@@ -87,6 +102,8 @@
   --mission-blue: #12cbc4;
   --mission-blue-dark: #0652dd;
   --hall-gold: #fbc531;
+  /* on dark glass the gold itself is legible, so the ink alias is a no-op */
+  --accent-gold-ink: var(--accent-gold);
   --score-border: #333333;
   --input-bg: rgba(255, 255, 255, 0.05);
   --input-text: #ffffff;
@@ -128,6 +145,21 @@ body {
 ::selection {
   background: var(--accent-mint);
   color: #04220f;
+}
+
+/* Touch polish. The d-pad already opted out of the OS tap flash and set
+   `touch-action: manipulation`; the hub, leaderboard and theme controls did
+   not, so they flashed grey and ate a 300 ms double-tap delay on mobile.
+   Every one of these controls paints its own :active state, so the flash is
+   redundant. */
+a,
+button,
+input,
+[role='button'],
+[role='tab'],
+[role='switch'] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Scrollbars that match the arcade cabinet */
@@ -326,6 +358,10 @@ body {
 }
 
 .menu-content>* {
+  /* grid items default to min-width:auto — a wide child (e.g. the leader
+     ticker) would otherwise push the page past a 320px viewport, where
+     `overflow-x: hidden` on <body> makes the overflow unreachable. */
+  min-width: 0;
   animation: staggerUp 0.7s var(--ease-out) both;
 }
 
@@ -364,11 +400,37 @@ body {
   }
 
   .menu-content.main-view>.hub-section {
+    /* DOM order is hub → highest → recent for heading/tab order; the grid
+       re-places the hub in the middle column so the visual design is unchanged. */
+    order: 2;
     min-width: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .menu-content.main-view>.high-scores-section {
+    order: 1;
+  }
+
+  .menu-content.main-view>.recent-hunts-section {
+    order: 3;
+  }
+}
+
+/* Stagger delays follow the visual (desktop) column order, not the DOM order. */
+@media (min-width: 1024px) {
+  .hub-section {
+    animation-delay: 0.14s;
+  }
+
+  .high-scores-section {
+    animation-delay: 0.05s;
+  }
+
+  .recent-hunts-section {
+    animation-delay: 0.23s;
   }
 }
 
@@ -492,10 +554,6 @@ body {
   }
 
   .mobile-only {
-    display: none !important;
-  }
-
-  .tab-switcher {
     display: none !important;
   }
 }
@@ -873,11 +931,15 @@ body {
    -------------------------------------------------------------------------- */
 @media (orientation: landscape) and (max-height: 500px) {
   .game-middle-stack {
-    --board-size: clamp(200px, 68vmin, 340px);
+    /* 68vmin would sit below the 200px floor on a 320×180 viewport (400% zoom),
+       and a 200px board + a 216px pad overflows the width — clipped away by
+       `overflow-x: hidden`. Cap the board against the real available width. */
+    --board-size: clamp(140px, 68vmin, 340px);
   }
 
   .game-layout-container {
     gap: 1rem;
+    min-width: 0;
   }
 
   /* board and thumb pad sit side by side, so nothing needs scrolling */

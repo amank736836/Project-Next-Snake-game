@@ -1,0 +1,352 @@
+TAP version 13
+# Subtest: TC-310 | the document starts with the <h1> and the primary controls
+ok 1 - TC-310 | the document starts with the <h1> and the primary controls
+  ---
+  duration_ms: 2701.535728
+  type: 'test'
+  ...
+# Subtest: TC-311 | the name input shows a visible focus indicator
+ok 2 - TC-311 | the name input shows a visible focus indicator
+  ---
+  duration_ms: 2669.020452
+  type: 'test'
+  ...
+# Subtest: TC-312 | the game-over dialog moves focus in and traps Tab
+ok 3 - TC-312 | the game-over dialog moves focus in and traps Tab
+  ---
+  duration_ms: 47003.388766
+  type: 'test'
+  ...
+# Subtest: TC-313 | leaderboard tabs are wired to their panels
+ok 4 - TC-313 | leaderboard tabs are wired to their panels
+  ---
+  duration_ms: 3707.972509
+  type: 'test'
+  ...
+# Subtest: TC-314 | interactive controls meet the 24×24px minimum target size
+    # Subtest: 320×640
+    ok 1 - 320×640
+      ---
+      duration_ms: 2609.534499
+      type: 'test'
+      ...
+    # Subtest: 390×844
+    ok 2 - 390×844
+      ---
+      duration_ms: 2583.134864
+      type: 'test'
+      ...
+    # Subtest: 1280×800
+    ok 3 - 1280×800
+      ---
+      duration_ms: 2653.878984
+      type: 'test'
+      ...
+    1..3
+ok 5 - TC-314 | interactive controls meet the 24×24px minimum target size
+  ---
+  duration_ms: 7847.730251
+  type: 'test'
+  ...
+# Subtest: TC-315 | every interactive control has an accessible name
+ok 6 - TC-315 | every interactive control has an accessible name
+  ---
+  duration_ms: 2634.070721
+  type: 'test'
+  ...
+# Subtest: TC-316 | white labels on filled controls clear 4.5:1 in both themes
+    # Subtest: dark theme
+    ok 1 - dark theme
+      ---
+      duration_ms: 2711.11268
+      type: 'test'
+      ...
+    # Subtest: light theme
+    ok 2 - light theme
+      ---
+      duration_ms: 2640.997054
+      type: 'test'
+      ...
+    1..2
+ok 7 - TC-316 | white labels on filled controls clear 4.5:1 in both themes
+  ---
+  duration_ms: 5352.962052
+  type: 'test'
+  ...
+# Subtest: TC-317 | no text falls below AA contrast against its painted backdrop
+    # Subtest: dark @ 390×844 — hub
+    ok 1 - dark @ 390×844 — hub
+      ---
+      duration_ms: 2670.051108
+      type: 'test'
+      ...
+    # Subtest: dark @ 390×844 — leaderboard
+    ok 2 - dark @ 390×844 — leaderboard
+      ---
+      duration_ms: 6177.580913
+      type: 'test'
+      ...
+    # Subtest: dark @ 1440×900 — hub
+    ok 3 - dark @ 1440×900 — hub
+      ---
+      duration_ms: 2664.491109
+      type: 'test'
+      ...
+    # Subtest: dark @ 1440×900 — leaderboard
+    ok 4 - dark @ 1440×900 — leaderboard
+      ---
+      duration_ms: 5110.754649
+      type: 'test'
+      ...
+    # Subtest: light @ 390×844 — hub
+    ok 5 - light @ 390×844 — hub
+      ---
+      duration_ms: 2696.689798
+      type: 'test'
+      ...
+    # Subtest: light @ 390×844 — leaderboard
+    ok 6 - light @ 390×844 — leaderboard
+      ---
+      duration_ms: 6192.799464
+      type: 'test'
+      ...
+    # Subtest: light @ 1440×900 — hub
+    ok 7 - light @ 1440×900 — hub
+      ---
+      duration_ms: 2620.543206
+      type: 'test'
+      ...
+    # Subtest: light @ 1440×900 — leaderboard
+    ok 8 - light @ 1440×900 — leaderboard
+      ---
+      duration_ms: 5111.802721
+      type: 'test'
+      ...
+    1..8
+ok 8 - TC-317 | no text falls below AA contrast against its painted backdrop
+  ---
+  duration_ms: 33246.856095
+  type: 'test'
+  ...
+# Subtest: TC-318 | prefers-reduced-motion really stops the motion
+ok 9 - TC-318 | prefers-reduced-motion really stops the motion
+  ---
+  duration_ms: 5375.633306
+  type: 'test'
+  ...
+# Subtest: TC-320 | the name field is validated before a run starts
+ok 10 - TC-320 | the name field is validated before a run starts
+  ---
+  duration_ms: 4116.600605
+  type: 'test'
+  ...
+# Subtest: TC-321 | the name field rejects unsupported characters and lengths
+ok 11 - TC-321 | the name field rejects unsupported characters and lengths
+  ---
+  duration_ms: 2638.814699
+  type: 'test'
+  ...
+# Subtest: TC-322 | keyboard steering works and typing arrow keys does not start a run
+ok 12 - TC-322 | keyboard steering works and typing arrow keys does not start a run
+  ---
+  duration_ms: 5544.811189
+  type: 'test'
+  ...
+# Subtest: TC-323 | pause saves the run and resume restores it
+ok 13 - TC-323 | pause saves the run and resume restores it
+  ---
+  duration_ms: 6113.161828
+  type: 'test'
+  ...
+# Subtest: TC-324 | rapid repeated clicks never corrupt the state
+ok 14 - TC-324 | rapid repeated clicks never corrupt the state
+  ---
+  duration_ms: 23355.284612
+  type: 'test'
+  ...
+# Subtest: TC-325 | the theme toggle switches, persists and survives a reload
+ok 15 - TC-325 | the theme toggle switches, persists and survives a reload
+  ---
+  duration_ms: 6079.670525
+  type: 'test'
+  ...
+# Subtest: TC-326 | the leaderboard tabs, paginates and returns to the hub
+ok 16 - TC-326 | the leaderboard tabs, paginates and returns to the hub
+  ---
+  duration_ms: 9382.977137
+  type: 'test'
+  ...
+# Subtest: TC-327 | browser Back returns to the hub instead of leaving the site
+ok 17 - TC-327 | browser Back returns to the hub instead of leaving the site
+  ---
+  duration_ms: 6591.585445
+  type: 'test'
+  ...
+# Subtest: TC-328 | touch affordances are consistent across every control
+ok 18 - TC-328 | touch affordances are consistent across every control
+  ---
+  duration_ms: 3775.459757
+  type: 'test'
+  ...
+# Subtest: TC-300 | no page overflows its viewport horizontally
+    # Subtest: mobile-320 (320×640)
+    ok 1 - mobile-320 (320×640)
+      ---
+      duration_ms: 3035.920765
+      type: 'test'
+      ...
+    # Subtest: mobile-375 (375×667)
+    ok 2 - mobile-375 (375×667)
+      ---
+      duration_ms: 2971.568799
+      type: 'test'
+      ...
+    # Subtest: mobile-390 (390×844)
+    ok 3 - mobile-390 (390×844)
+      ---
+      duration_ms: 2957.55741
+      type: 'test'
+      ...
+    # Subtest: mobile-425 (425×900)
+    ok 4 - mobile-425 (425×900)
+      ---
+      duration_ms: 3143.246086
+      type: 'test'
+      ...
+    # Subtest: tablet-768 (768×1024)
+    ok 5 - tablet-768 (768×1024)
+      ---
+      duration_ms: 3020.001458
+      type: 'test'
+      ...
+    # Subtest: tablet-820 (820×1180)
+    ok 6 - tablet-820 (820×1180)
+      ---
+      duration_ms: 3121.412364
+      type: 'test'
+      ...
+    # Subtest: tablet-1024 (1024×768)
+    ok 7 - tablet-1024 (1024×768)
+      ---
+      duration_ms: 3454.234172
+      type: 'test'
+      ...
+    # Subtest: laptop-1280 (1280×800)
+    ok 8 - laptop-1280 (1280×800)
+      ---
+      duration_ms: 3255.685658
+      type: 'test'
+      ...
+    # Subtest: laptop-1366 (1366×768)
+    ok 9 - laptop-1366 (1366×768)
+      ---
+      duration_ms: 3390.013315
+      type: 'test'
+      ...
+    # Subtest: desktop-1440 (1440×900)
+    ok 10 - desktop-1440 (1440×900)
+      ---
+      duration_ms: 3551.824607
+      type: 'test'
+      ...
+    # Subtest: desktop-1920 (1920×1080)
+    ok 11 - desktop-1920 (1920×1080)
+      ---
+      duration_ms: 3865.890006
+      type: 'test'
+      ...
+    # Subtest: ultrawide-2560 (2560×1440)
+    ok 12 - ultrawide-2560 (2560×1440)
+      ---
+      duration_ms: 4841.499881
+      type: 'test'
+      ...
+    # Subtest: zoom-200 (640×360)
+    ok 13 - zoom-200 (640×360)
+      ---
+      duration_ms: 3088.155283
+      type: 'test'
+      ...
+    # Subtest: zoom-400 (320×180)
+    ok 14 - zoom-400 (320×180)
+      ---
+      duration_ms: 2770.221722
+      type: 'test'
+      ...
+    # Subtest: landscape-844x390 (844×390)
+    ok 15 - landscape-844x390 (844×390)
+      ---
+      duration_ms: 3124.52208
+      type: 'test'
+      ...
+    1..15
+ok 19 - TC-300 | no page overflows its viewport horizontally
+  ---
+  duration_ms: 49596.045024
+  type: 'test'
+  ...
+# Subtest: TC-301 | the mission hub survives a long leader name at 320px
+ok 20 - TC-301 | the mission hub survives a long leader name at 320px
+  ---
+  duration_ms: 6649.452775
+  type: 'test'
+  ...
+# Subtest: TC-302 | the game screen fits at 400% zoom and in landscape
+    # Subtest: 320×180
+    ok 1 - 320×180
+      ---
+      duration_ms: 4510.060622
+      type: 'test'
+      ...
+    # Subtest: 844×390
+    ok 2 - 844×390
+      ---
+      duration_ms: 4695.518204
+      type: 'test'
+      ...
+    1..2
+ok 21 - TC-302 | the game screen fits at 400% zoom and in landscape
+  ---
+  duration_ms: 9206.331328
+  type: 'test'
+  ...
+# Subtest: TC-303 | no console errors and no failed requests on a cold load
+ok 22 - TC-303 | no console errors and no failed requests on a cold load
+  ---
+  duration_ms: 2610.50753
+  type: 'test'
+  ...
+# Subtest: TC-304 | the desktop three-column menu keeps its visual order
+ok 23 - TC-304 | the desktop three-column menu keeps its visual order
+  ---
+  duration_ms: 2611.183752
+  type: 'test'
+  ...
+# Subtest: TC-305 | long names ellipsize inside a leaderboard row instead of overflowing
+    # Subtest: 390×844
+    ok 1 - 390×844
+      ---
+      duration_ms: 6181.682938
+      type: 'test'
+      ...
+    # Subtest: 1024×768
+    ok 2 - 1024×768
+      ---
+      duration_ms: 5046.9087
+      type: 'test'
+      ...
+    1..2
+ok 24 - TC-305 | long names ellipsize inside a leaderboard row instead of overflowing
+  ---
+  duration_ms: 11229.265722
+  type: 'test'
+  ...
+1..24
+# tests 56
+# suites 0
+# pass 56
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 262212.455343

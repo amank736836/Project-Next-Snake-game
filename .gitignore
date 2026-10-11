@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# visual-regression screenshots (regenerated on every `npm run test:visual`)
+harness/evidence/screenshots/

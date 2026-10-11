@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Full harness execution: unit → api → ui → performance → security → database.
+# Full harness execution: unit → api → ui → performance → security → database → visual.
+# The visual suite drives a real browser and reports SKIP (never a pass) when no
+# Chromium binary is available.
 # Run: npm test         (or: bash harness/automation/scripts/run-all.sh)
 source "$(dirname "${BASH_SOURCE[0]}")/lib/common.sh"
 
@@ -18,6 +20,8 @@ HARNESS_PORT="$DEFAULT_PORT" bash "$SCRIPT_DIR/run-ui.sh"
 HARNESS_PORT="$DEFAULT_PORT" bash "$SCRIPT_DIR/run-performance.sh"
 HARNESS_PORT="$DEFAULT_PORT" bash "$SCRIPT_DIR/run-security.sh"
 HARNESS_PORT="$DEFAULT_PORT" bash "$SCRIPT_DIR/run-database.sh"
+export QA_SHOT_DIR="$HARNESS_DIR/evidence/screenshots/$RUN_ID"
+HARNESS_PORT="$DEFAULT_PORT" bash "$SCRIPT_DIR/run-visual.sh"
 
 node "$HARNESS_DIR/automation/utilities/summarize.mjs" --finalize
 log "artefacts: harness/test-results/latest/ · harness/test-results/historical/$RUN_ID/ · harness/test-results/summaries/$RUN_ID.md"

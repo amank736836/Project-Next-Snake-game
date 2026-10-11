@@ -5,8 +5,11 @@ tested, what passed or failed, and how to reproduce it** lives in this folder.
 Application source code is **not** duplicated or modified here — the harness only
 describes and exercises it.
 
-> **Current status:** `RUN-2026-001` — **139 automated test cases, 116 passing,
-> 0 unexplained failures, 18 known issues, 5 cases blocked on MongoDB**.
+> **Current status:** `RUN-2026-001` + the 2026-10-11 UI/responsive audit —
+> **163 automated test cases, 140 passing, 0 unexplained failures, 18 known backend
+> issues, 5 cases blocked on MongoDB**. The audit added a real-browser suite
+> (`npm run test:visual`) and fixed 14 UI defects; see
+> [`reports/ui-qa-report.md`](reports/ui-qa-report.md).
 > Full detail: [`TESTING_STATUS.md`](TESTING_STATUS.md) ·
 > [`reports/test-summary.md`](reports/test-summary.md).
 
@@ -17,13 +20,14 @@ describes and exercises it.
 ```bash
 npm install                # once
 
-npm test                   # everything: unit → api → ui → performance → security → database
+npm test                   # everything: unit → api → ui → performance → security → database → visual
 npm run test:unit          # pure logic, no server, ~3 s
 npm run test:api           # HTTP contract tests (boots a production server on :3100)
 npm run test:ui            # game engine in jsdom + component markup + served shell
 npm run test:performance   # latency / payload / concurrency guardrails
 npm run test:security      # headers, CORS, input abuse, secret scan
 npm run test:database      # MongoDB mode (skips with a clear reason when unavailable)
+npm run test:visual        # real browser: layout, contrast, focus, touch (SKIPS without a Chromium binary)
 npm run test:evidence      # re-capture raw HTTP evidence for the current RUN_ID
 npm run lint               # unchanged project lint
 ```

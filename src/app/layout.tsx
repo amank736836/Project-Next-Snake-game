@@ -12,7 +12,12 @@ import "./globals.css";
 /**
  * Geist ships with the `geist` package and Outfit comes from @fontsource, so
  * typography resolves locally instead of hitting Google Fonts at build time.
+ *
+ * Vercel Analytics only works on Vercel: off-platform it requests
+ * `/_vercel/insights/script.js`, which does not exist and logs a 404 plus a
+ * failed request on every page load. Only mount it when it can be served.
  */
+const analyticsEnabled = process.env.VERCEL === "1" || Boolean(process.env.VERCEL_URL);
 
 export const metadata: Metadata = {
   title: "Nagini · Snake Game",
@@ -54,7 +59,7 @@ export default function RootLayout({
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
-        <Analytics />
+        {analyticsEnabled && <Analytics />}
       </body>
     </html>
   );
